@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #100c08; font-family: "Figtree", system-ui, sans-serif; color: #f6f1e8; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  a { color: var(--accent, #e8975a); text-decoration: none; }
+  a:hover { color: #f2b27a; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.55); } }
+  .row-h:hover { background: rgba(232,151,90,0.07) !important; }
+  .rowedit { opacity: 0; transition: opacity .12s ease; display: flex; align-items: center; gap: 4px; justify-content: flex-end; color: var(--accent,#e8975a); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .row-h:hover .rowedit { opacity: 1; }
+  .frame { width: 1180px; background: #1c1811; border: 1px solid #332c22; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03); display: flex; flex-direction: column; }
+  .navlink { color: #9a9082; padding: 7px 11px; border-radius: 8px; font-size: 14px; }
+  .navon { color: #f6f1e8; font-weight: 600; padding: 7px 11px; border-radius: 8px; font-size: 14px; background: #262019; }
+  .btn { background: var(--accent, #e8975a); color: #17130e; padding: 8px 15px; font-size: 13.5px; font-weight: 600; border-radius: 9px; display: inline-flex; align-items: center; gap: 7px; }
+  .btn-o { border: 1px solid #4a4030; color: #f6f1e8; padding: 8px 15px; font-size: 13px; border-radius: 9px; display: inline-flex; align-items: center; gap: 8px; background: #221d15; }
+  .field { border: 1px solid #332c22; background: #17130d; border-radius: 10px; padding: 11px 13px; font-size: 14px; color: #f6f1e8; display: flex; align-items: center; justify-content: space-between; }
+  .flabel { font-size: 12.5px; color: #9a9082; }
+  .card { border: 1px solid #2c261d; border-radius: 12px; background: #1e1a13; }
+  .badge { font-size: 13px; font-weight: 600; background: var(--accent, #e8975a); color: #17130e; padding: 3px 9px; border-radius: 6px; }
+  .stat { border: 1px solid #332c22; background: #211c15; border-radius: 12px; padding: 15px 16px; display: flex; flex-direction: column; gap: 7px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#3a3226,#2a251c); border: 1px solid #4a4030; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #d9cfbf; }
+  .tag { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.06em; padding: 3px 7px; border-radius: 6px; }
+</style>
+</helmet>
+
+<div style="--accent: {{ accent }}; --rowpad: {{ rowPad }}; padding: 60px; display: flex; flex-direction: column; gap: 64px; align-items: flex-start; width: 1338px; height: 13125px">
+
+  <div style="max-width: 900px; display: flex; flex-direction: column; gap: 12px;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.22em; color: #7b7264;">SOLOCLOCK · HI-FI SCREEN SET · DARK</div>
+    <div style="font-size: 32px; font-weight: 800; letter-spacing: -0.02em;">Soloclock</div>
+    <div style="font-size: 15px; line-height: 1.6; color: #b0a796; text-wrap: pretty;">Every screen from the wireframes, rendered in the filter-rail / day-grouped direction. Warm dark surfaces, terracotta accent, humanist type (Figtree + IBM&nbsp;Plex&nbsp;Mono). The running-timer bar is <strong style="color: rgb(246, 241, 232); font-weight: 600;">live</strong> and anchored to the bottom of every authenticated screen. Project color is identity only (dot or rail); every status is text.&nbsp;</div>
+  </div>
+
+  <!-- ==================================================== AUTH ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— AUTH</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start;">
+
+      <div id="A1" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">A1</span><span style="font-size: 15px; font-weight: 600;">Log in</span></div>
+        <div style="width: 560px; height: 560px; background: radial-gradient(120% 90% at 50% 0%, #221b12, #14100b); border: 1px solid #332c22; border-radius: 18px; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 380px; background: #1c1811; border: 1px solid #332c22; border-radius: 16px; padding: 30px 28px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8);">
+            <div style="display: flex; align-items: center; gap: 9px; font-weight: 700;"><span style="width: 13px; height: 13px; border-radius: 50%; background: var(--accent,#e8975a); box-shadow: 0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+            <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; font-weight: 700;">Welcome back</span><span style="font-size: 13px; color: #9a9082;">Log in to your workspace</span></div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Email</span><div class="field"><span>jordan@studio.co</span></div></div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Password</span><div class="field" style="border-color: #7a3b32;"><span style="color:#9a9082;">••••••••</span><span style="color:#c77b6a;">!</span></div><span style="font-size: 12px; color: #c77b6a;">Incorrect email or password.</span></div>
+            <div class="btn" style="justify-content: center; padding: 11px;">Log in</div>
+            <div style="font-size: 13px; color: #9a9082; text-align: center;">New here? <a href="#A2">Create an account</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="A2" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">A2</span><span style="font-size: 15px; font-weight: 600;">Sign up</span></div>
+        <div style="width: 560px; height: 560px; background: radial-gradient(120% 90% at 50% 0%, #221b12, #14100b); border: 1px solid #332c22; border-radius: 18px; display: flex; align-items: center; justify-content: center;">
+          <div style="width: 380px; background: #1c1811; border: 1px solid #332c22; border-radius: 16px; padding: 30px 28px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8);">
+            <div style="display: flex; align-items: center; gap: 9px; font-weight: 700;"><span style="width: 13px; height: 13px; border-radius: 50%; background: var(--accent,#e8975a); box-shadow: 0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+            <div style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 22px; font-weight: 700;">Create your account</span><span style="font-size: 13px; color: #9a9082;">Track time, bill clients, get paid.</span></div>
+            <div style="display: flex; flex-direction: column; gap: 6px;"><span class="flabel">Name</span><div class="field"><span>Jordan Diaz</span></div></div>
+            <div style="display: flex; flex-direction: column; gap: 6px;"><span class="flabel">Email</span><div class="field" style="border-color: #7a3b32;"><span>taken@studio.co</span></div><span style="font-size: 12px; color: #c77b6a;">That email is already registered.</span></div>
+            <div style="display: flex; flex-direction: column; gap: 6px;"><span class="flabel">Password</span><div class="field"><span style="color:#9a9082;">••••••••••</span></div><span style="font-size: 12px; color: #7b7264;">At least 8 characters.</span></div>
+            <div class="btn" style="justify-content: center; padding: 11px;">Create account</div>
+            <div style="font-size: 13px; color: #9a9082; text-align: center;">Already have one? <a href="#A1">Log in</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== DASHBOARD ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— DASHBOARD</div>
+    <div id="DB" style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">DB</span><span style="font-size: 15px; font-weight: 600;">Dashboard</span><span style="font-size: 13px; color: #7b7264;">— summary, timer quick-start, recent activity</span></div>
+      <div class="frame">
+        <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;">
+          <div style="display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-0.01em;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+          <div style="display:flex;gap:4px;"><span class="navon">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div>
+        </div>
+        <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; min-height: 560px;">
+          
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+            <div class="stat"><span class="flabel">Unbilled hours</span><span class="mono" style="font-size: 24px; font-weight: 700;">31h 00m</span><span style="font-size: 11px; color: #7b7264;">billable, uninvoiced</span></div>
+            <div class="stat"><span class="flabel">Unbilled amount</span><span class="mono" style="font-size: 24px; font-weight: 700; color: var(--accent,#e8975a);">$2,845</span><span style="font-size: 11px; color: #7b7264;">across all projects</span></div>
+            <div class="stat"><span class="flabel">Outstanding</span><span class="mono" style="font-size: 24px; font-weight: 700;">$4,120</span><span style="font-size: 11px; color: #7b7264;">sent, not yet paid</span></div>
+            <div class="stat"><span class="flabel">Paid this month</span><span class="mono" style="font-size: 24px; font-weight: 700;">$6,300</span><span style="font-size: 11px; color: #7b7264;">Jul 2026</span></div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: center; justify-content: space-between;"><div style="font-size: 22px; font-weight: 700;">Revenue · last 12 months</div><div style="display: flex; gap: 18px; font-size: 12.5px; align-items: center;"><span style="display: flex; align-items: center; gap: 7px;"><span style="width: 14px; height: 14px; border-radius: 3px; background: var(--accent,#e8975a);"></span>Billed</span><span style="display: flex; align-items: center; gap: 7px;"><span style="width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid var(--accent,#e8975a); background: rgba(232,151,90,0.12);"></span>Collected</span></div></div>
+<div style="border: 1px solid #2c261d; border-radius: 14px; padding: 22px 20px 14px; display: flex; align-items: flex-end; gap: 14px; height: 280px; background: #1e1a13;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:40%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:35%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Aug</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:55%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:50%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Sep</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:45%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:45%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Oct</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:70%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:60%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Nov</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:60%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:65%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Dec</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:50%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:45%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Jan</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:65%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:55%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Feb</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:80%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:70%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Mar</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:72%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:68%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Apr</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:60%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:55%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">May</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:85%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:40%;"></span></div><span class="mono" style="font-size:10px;color:#7b7264;">Jun</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;"><div style="display:flex;gap:3px;align-items:flex-end;height:100%;"><span style="width:13px;background:var(--accent,#e8975a);border-radius:3px 3px 0 0;height:78%;"></span><span style="width:13px;border:1.5px solid var(--accent,#e8975a);background:rgba(232,151,90,0.12);border-radius:3px 3px 0 0;height:30%;"></span></div><span class="mono" style="font-size:10px;color:#f6f1e8;font-weight:600;">Jul</span></div>
+          </div>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;"><div class="stat"><span class="flabel">12-mo billed</span><span class="mono" style="font-size:22px;font-weight:700;">$84,300</span></div><div class="stat"><span class="flabel">12-mo collected</span><span class="mono" style="font-size:22px;font-weight:700;">$72,180</span></div><div class="stat"><span class="flabel">Outstanding</span><span class="mono" style="font-size:22px;font-weight:700;color:var(--accent,#e8975a);">$12,120</span></div></div>
+          </sc-if>
+          <sc-if value="{{ isIdle }}" hint-placeholder-val="{{ true }}">
+          <div style="border: 1px solid #332c22; border-radius: 12px; background: #191510; padding: 16px 18px; display: flex; align-items: center; gap: 14px;">
+            <span class="mono" style="font-size: 11px; letter-spacing: 0.12em; color: #7b7264;">START A TIMER</span>
+            <div class="field" style="width: 240px;"><span style="color:#9a9082;">Choose a project</span><span style="color:#7b7264;">▾</span></div>
+            <span class="btn" style="margin-left: auto;">▸ Start</span>
+          </div>
+          </sc-if>
+          
+        </div>
+        <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;color:#f6f1e8;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== TIMESHEET ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— TIMESHEET</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start;">
+
+      <!-- TS-D : grouped by day -->
+      <div id="1a" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">1a</span><span style="font-size: 15px; font-weight: 600;">Timesheet · grouped by day</span><span style="font-size: 12.5px; color: #7b7264;">— entries sharing project + description collapse into one row (▾ 2 entries · 3h 30m); expand to see each session · hover any entry for <span style="color:var(--accent,#e8975a);">✎ Edit</span> → opens the edit modal, see <a href="#EE">EE</a></span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;">
+            <div style="display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-0.01em;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+            <div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navon">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div>
+          </div>
+          <div style="display: flex; align-items: stretch; min-height: 560px;">
+            <div style="width: 258px; border-right: 1px solid #2c261d; padding: 22px 20px; display: flex; flex-direction: column; gap: 24px; background: #191510;">
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #7b7264;">FILTERS</span><span style="font-size: 12px; color: #9a9082; border: 1px solid #332c22; border-radius: 7px; width: 26px; height: 24px; display: flex; align-items: center; justify-content: center;">«</span></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Date range</span><div style="display: flex; flex-direction: column; gap: 4px;"><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; background: var(--accent,#e8975a); color: #17130e; font-weight: 600;">This week</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">Last week</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">This month</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">Custom…</div></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Client</span><div class="field" style="border-radius: 9px; padding: 9px 12px; font-size: 13px;"><span style="color:#d9cfbf;">All clients</span><span style="color:#7b7264;">▾</span></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Project</span><div class="field" style="border-radius: 9px; padding: 9px 12px; font-size: 13px;"><span style="color:#d9cfbf;">All projects</span><span style="color:#7b7264;">▾</span></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Group by</span><div style="display: flex; background: #211c15; border: 1px solid #332c22; border-radius: 9px; padding: 3px;"><div style="flex: 1; text-align: center; padding: 7px; font-size: 13px; border-radius: 7px; background: #322a1f; color: #f6f1e8; font-weight: 600;">Day</div><div style="flex: 1; text-align: center; padding: 7px; font-size: 13px; color: #9a9082;">Project</div></div></div>
+              
+            </div>
+            <div style="flex: 1; padding: 24px 26px; display: flex; flex-direction: column; gap: 20px;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between;">
+                <div style="display: flex; flex-direction: column; gap: 5px;"><div style="font-size: 22px; font-weight: 700;">Timesheet</div><div style="font-size: 13px; color: #7b7264;">This week · Jul 14 – Jul 20, 2026</div></div>
+                <div style="display: flex; gap: 10px;"><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Tracked</span><span class="mono" style="font-size: 15px; font-weight: 600;">40h 15m</span></div><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Unbilled</span><span class="mono" style="font-size: 15px; font-weight: 600; color: var(--accent,#e8975a);">32h 45m</span></div></div>
+              </div>
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #221d15; padding: 10px 16px; border-bottom: 1px solid #2c261d;"><span style="font-size: 13.5px; font-weight: 700;">Mon · Jul 14</span><span class="mono" style="font-size: 13px; color: #b0a796;">10h 15m</span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px); border-left: 3px solid var(--accent,#e8975a); background: rgba(232,151,90,0.09);"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:13.5px;font-weight:500;">Acme Redesign</span><span style="font-size:12.5px;color:#9a9082;">Acme Co</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1:00 PM – now</span><span class="mono" style="font-size:13.5px;font-weight:600;color:var(--accent,#e8975a);">{{ running }}</span><span style="font-size:12.5px;color:#b0a796;">Hero section polish</span><span class="tag" style="display:flex;align-items:center;gap:6px;color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;"></span>RUNNING</span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px); border-top: 1px solid #2c261d; cursor: pointer;" title="same project + description — collapsed; click to expand/collapse"><span class="mono" style="font-size:11px;color:var(--accent,#e8975a);">▾</span><span style="font-size:13.5px;display:flex;align-items:center;gap:8px;"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;flex:none;"></span>Acme Redesign</span><span style="font-size:12.5px;color:#9a9082;">Acme Co</span><span class="mono" style="font-size:12.5px;color:#9a9082;">2 entries</span><span class="mono" style="font-size:13.5px;font-weight:700;">3h 30m</span><span style="font-size:12.5px;color:#b0a796;display:flex;align-items:center;gap:8px;">Nav + footer build<span class="tag" style="color:#9a9082;border:1px solid #4a4030;">×2</span></span><span></span></div><div style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: 8px 16px; border-top: 1px solid #241f17; background: #17130d;"><span></span><span></span><span></span><span class="mono" style="font-size:12px;color:#7b7264;">9:15 – 11:00 AM</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1h 45m</span><span style="font-size:12px;color:#8a8072;">Nav + footer build</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div><div style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: 8px 16px; border-top: 1px solid #241f17; background: #17130d;"><span></span><span></span><span></span><span class="mono" style="font-size:12px;color:#7b7264;">11:00 AM – 12:45 PM</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1h 45m</span><span style="font-size:12px;color:#8a8072;">Nav + footer build</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px); border-top: 1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;"></span><span style="font-size:13.5px;">Website Copy</span><span style="font-size:12.5px;color:#9a9082;">Bright Media</span><span class="mono" style="font-size:12.5px;color:#9a9082;">11:15 – 1:00 PM</span><span class="mono" style="font-size:13.5px;">1h 45m</span><span style="font-size:12.5px;color:#b0a796;">Landing page draft</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px); border-top: 1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#9aa6b2;"></span><span style="font-size:13.5px;">Internal Ops</span><span style="font-size:12.5px;color:#7b7264;">— (self)</span><span class="mono" style="font-size:12.5px;color:#9a9082;">2:00 – 4:00 PM</span><span class="mono" style="font-size:13.5px;">2h 00m</span><span style="font-size:12.5px;color:#b0a796;">Admin / email</span><span style="display:flex;align-items:center;gap:10px;justify-content:flex-end;"><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span><span class="tag" style="color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span></span></div>
+              </div>
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #221d15; padding: 10px 16px; border-bottom: 1px solid #2c261d;"><span style="font-size: 13.5px; font-weight: 700;">Sun · Jul 13</span><span class="mono" style="font-size: 13px; color: #b0a796;">6h 00m</span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px);"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;"></span><span style="font-size:13.5px;">Website Copy</span><span style="font-size:12.5px;color:#9a9082;">Bright Media</span><span class="mono" style="font-size:12.5px;color:#9a9082;">10:00 – 4:00 PM</span><span class="mono" style="font-size:13.5px;">6h 00m</span><span style="font-size:12.5px;color:#b0a796;">Landing page draft</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div>
+              </div>
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #221d15; padding: 10px 16px; border-bottom: 1px solid #2c261d;"><span style="font-size: 13.5px; font-weight: 700;">Fri · Jul 11</span><span class="mono" style="font-size: 13px; color: #b0a796;">7h 15m</span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px);"><span style="width:10px;height:10px;border-radius:50%;background:#f27db4;"></span><span style="font-size:13.5px;">Mobile App</span><span style="font-size:12.5px;color:#9a9082;">Northwind</span><span class="mono" style="font-size:12.5px;color:#9a9082;">9:30 – 1:15 PM</span><span class="mono" style="font-size:13.5px;">3h 45m</span><span style="font-size:12.5px;color:#b0a796;">Onboarding screens</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div>
+                <div class="row-h" style="display: grid; grid-template-columns: 16px 168px 118px 152px 84px 1fr auto; align-items: center; gap: 14px; padding: var(--rowpad,13px 16px); border-top: 1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#a6e24d;"></span><span style="font-size:13.5px;">Brand System</span><span style="font-size:12.5px;color:#9a9082;">Lumen Labs</span><span class="mono" style="font-size:12.5px;color:#9a9082;">2:00 – 5:30 PM</span><span class="mono" style="font-size:13.5px;">3h 30m</span><span style="font-size:12.5px;color:#b0a796;">Type scale + tokens</span><span class="rowedit"><a href="#EE" style="color:inherit;">✎ Edit</a></span></div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;color:#f6f1e8;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- TS-P : grouped by project -->
+      <div id="1b" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">1b</span><span style="font-size: 15px; font-weight: 600;">Timesheet · grouped by project</span><span style="font-size: 12.5px; color: #7b7264;">— same collapse applied to a project-grouped card</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;">
+            <div style="display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-0.01em;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+            <div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navon">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div>
+          </div>
+          <div style="display: flex; align-items: stretch; min-height: 560px;">
+            <div style="width: 258px; border-right: 1px solid #2c261d; padding: 22px 20px; display: flex; flex-direction: column; gap: 24px; background: #191510;">
+              <div style="display: flex; align-items: center; justify-content: space-between;"><span class="mono" style="font-size: 11px; letter-spacing: 0.16em; color: #7b7264;">FILTERS</span><span style="font-size: 12px; color: #9a9082; border: 1px solid #332c22; border-radius: 7px; width: 26px; height: 24px; display: flex; align-items: center; justify-content: center;">«</span></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Date range</span><div style="display: flex; flex-direction: column; gap: 4px;"><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; background: var(--accent,#e8975a); color: #17130e; font-weight: 600;">This week</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">Last week</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">This month</div><div style="padding: 8px 12px; font-size: 13px; border-radius: 9px; color: #b0a796;">Custom…</div></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Client</span><div class="field" style="border-radius: 9px; padding: 9px 12px; font-size: 13px;"><span style="color:#d9cfbf;">All clients</span><span style="color:#7b7264;">▾</span></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Project</span><div class="field" style="border-radius: 9px; padding: 9px 12px; font-size: 13px;"><span style="color:#d9cfbf;">All projects</span><span style="color:#7b7264;">▾</span></div></div>
+              <div style="display: flex; flex-direction: column; gap: 9px;"><span class="flabel">Group by</span><div style="display: flex; background: #211c15; border: 1px solid #332c22; border-radius: 9px; padding: 3px;"><div style="flex: 1; text-align: center; padding: 7px; font-size: 13px; border-radius: 7px; color: #9a9082;">Day</div><div style="flex: 1; text-align: center; padding: 7px; font-size: 13px; border-radius: 7px; background: #322a1f; color: #f6f1e8; font-weight: 600;">Project</div></div></div>
+            </div>
+            <div style="flex: 1; padding: 24px 26px; display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between;"><div style="display: flex; flex-direction: column; gap: 5px;"><div style="font-size: 22px; font-weight: 700;">Timesheet</div><div style="font-size: 13px; color: #7b7264;">This week · Jul 14 – Jul 20, 2026</div></div><div style="display: flex; gap: 10px;"><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Tracked</span><span class="mono" style="font-size: 15px; font-weight: 600;">40h 15m</span></div><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Unbilled</span><span class="mono" style="font-size: 15px; font-weight: 600; color: var(--accent,#e8975a);">32h 45m</span></div></div></div>
+
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #221d15; border-bottom: 1px solid #2c261d;"><span style="width:11px;height:11px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14.5px;font-weight:700;">Acme Redesign</span><span style="font-size:12.5px;color:#9a9082;">· Acme Co · $95/hr</span><div style="margin-left:auto;display:flex;gap:18px;align-items:center;"><span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);display:flex;gap:5px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;"></span>RUNNING</span><span class="mono" style="font-size:13px;color:#b0a796;">16h 00m total</span><span class="mono" style="font-size:13px;font-weight:600;color:var(--accent,#e8975a);">14h 15m unbilled</span></div></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-left:3px solid var(--accent,#e8975a);background:rgba(232,151,90,0.09);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1:00 PM – now</span><span class="mono" style="font-size:13.5px;font-weight:600;color:var(--accent,#e8975a);">{{ running }}</span><span style="font-size:12.5px;color:#b0a796;">Hero section polish</span><span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);">RUNNING</span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-top:1px solid #2c261d; cursor: pointer;" title="same project + description — collapsed; click to expand/collapse"><span class="mono" style="font-size:12.5px;color:var(--accent,#e8975a);display:flex;align-items:center;gap:6px;">▾ Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">2 entries</span><span class="mono" style="font-size:13.5px;font-weight:700;">3h 30m</span><span style="font-size:12.5px;color:#b0a796;display:flex;align-items:center;gap:8px;">Nav + footer build<span class="tag" style="color:#9a9082;border:1px solid #4a4030;">×2</span></span><span></span></div><div style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:8px 16px 8px 28px;border-top:1px solid #241f17;background:#17130d;"><span></span><span class="mono" style="font-size:12px;color:#7b7264;">9:15 – 11:00 AM</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1h 45m</span><span style="font-size:12px;color:#8a8072;">Nav + footer build</span><span></span></div><div style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:8px 16px 8px 28px;border-top:1px solid #241f17;background:#17130d;"><span></span><span class="mono" style="font-size:12px;color:#7b7264;">11:00 AM – 12:45 PM</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1h 45m</span><span style="font-size:12px;color:#8a8072;">Nav + footer build</span><span></span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 11</span><span class="mono" style="font-size:12.5px;color:#9a9082;">10:00 AM – 3:00 PM</span><span class="mono" style="font-size:13.5px;">5h 00m</span><span style="font-size:12.5px;color:#b0a796;">Design review + revisions</span><span></span></div>
+              </div>
+
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #221d15; border-bottom: 1px solid #2c261d;"><span style="width:11px;height:11px;border-radius:50%;background:#a78bfa;flex:none;"></span><span style="font-size:14.5px;font-weight:700;">Website Copy</span><span style="font-size:12.5px;color:#9a9082;">· Bright Media · $80/hr</span><div style="margin-left:auto;display:flex;gap:18px;align-items:center;"><span class="mono" style="font-size:13px;color:#b0a796;">9h 30m total</span><span class="mono" style="font-size:13px;font-weight:600;color:var(--accent,#e8975a);">9h 30m unbilled</span></div></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 13</span><span class="mono" style="font-size:12.5px;color:#9a9082;">10:00 AM – 4:00 PM</span><span class="mono" style="font-size:13.5px;">6h 00m</span><span style="font-size:12.5px;color:#b0a796;">Landing page draft</span><span></span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 10</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1:00 PM – 4:30 PM</span><span class="mono" style="font-size:13.5px;">3h 30m</span><span style="font-size:12.5px;color:#b0a796;">About + pricing copy</span><span></span></div>
+              </div>
+
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #221d15; border-bottom: 1px solid #2c261d;"><span style="width:11px;height:11px;border-radius:50%;background:#9aa6b2;flex:none;"></span><span style="font-size:14.5px;font-weight:700;">Internal Ops</span><span style="font-size:12.5px;color:#9a9082;">· — (self)</span><div style="margin-left:auto;display:flex;gap:18px;align-items:center;"><span class="tag" style="color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span><span class="mono" style="font-size:13px;color:#b0a796;">6h 30m total</span><span class="mono" style="font-size:13px;font-weight:600;color:#7b7264;">0h 00m unbilled</span></div></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">2:00 PM – 4:00 PM</span><span class="mono" style="font-size:13.5px;">2h 00m</span><span style="font-size:12.5px;color:#b0a796;">Admin / email</span><span class="tag" style="color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 12</span><span class="mono" style="font-size:12.5px;color:#9a9082;">9:00 AM – 1:30 PM</span><span class="mono" style="font-size:13.5px;">4h 30m</span><span style="font-size:12.5px;color:#b0a796;">Ops cleanup</span><span class="tag" style="color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span></div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;color:#f6f1e8;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== CLIENTS ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— CLIENTS</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start;">
+
+      <div id="CL" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">CL</span><span style="font-size: 15px; font-weight: 600;">Clients · list</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navon">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New client</span><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; min-height: 500px;">
+            <div style="font-size: 22px; font-weight: 700;">Clients</div>
+            <div class="card" style="overflow: hidden;">
+              <div style="display:grid;grid-template-columns:1fr 220px 120px 130px 40px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span>Client</span><span>Email</span><span>Projects</span><span style="text-align:right;">Unbilled</span><span></span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:1fr 220px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);"><span style="font-size:14px;font-weight:500;">Acme Co</span><span style="font-size:13px;color:#9a9082;">ap@acme.co</span><span style="font-size:13px;color:#b0a796;">2 projects</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">$1,187</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:1fr 220px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="font-size:14px;font-weight:500;">Bright Media</span><span style="font-size:13px;color:#9a9082;">hello@brightmedia.io</span><span style="font-size:13px;color:#b0a796;">1 project</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">$780</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:1fr 220px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="font-size:14px;font-weight:500;">Northwind</span><span style="font-size:13px;color:#7b7264;">—</span><span style="font-size:13px;color:#b0a796;">1 project</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">$605</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:1fr 220px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="font-size:14px;font-weight:500;">Lumen Labs</span><span style="font-size:13px;color:#9a9082;">team@lumenlabs.dev</span><span style="font-size:13px;color:#b0a796;">1 project</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">$273</span><span style="text-align:right;color:#7b7264;">›</span></div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="CD" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">CD</span><span style="font-size: 15px; font-weight: 600;">Client · detail</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navon">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; min-height: 500px;">
+            <div style="font-size: 12.5px; color: #7b7264;"><a href="#CL">Clients</a> <span style="color:#4a4030;">/</span> Acme Co</div>
+            <div style="display: flex; align-items: flex-start; justify-content: space-between;"><div style="display:flex;flex-direction:column;gap:5px;"><span style="font-size:24px;font-weight:700;">Acme Co</span><span style="font-size:13px;color:#9a9082;">ap@acme.co · Client since Mar 2025</span></div><div style="display:flex;gap:10px;"><span class="btn-o">Edit</span><span class="btn">+ New project</span></div></div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;"><div class="stat"><span class="flabel">Hours tracked</span><span class="mono" style="font-size:22px;font-weight:700;">142h 15m</span><span style="font-size:11px;color:#7b7264;">billable + non-billable</span></div><div class="stat"><span class="flabel">Invoiced</span><span class="mono" style="font-size:22px;font-weight:700;">$11,400</span></div><div class="stat"><span class="flabel">Unbilled</span><span class="mono" style="font-size:22px;font-weight:700;color:var(--accent,#e8975a);">$1,187</span><span style="font-size:11px;color:#7b7264;">billable, uninvoiced</span></div></div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-size: 15px; font-weight: 600;">Projects</div>
+              <div class="card" style="overflow:hidden;">
+                <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 120px 140px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:14px;font-weight:500;">Acme Redesign</span><span class="mono" style="font-size:13px;color:#9a9082;">$95/hr</span><span class="mono" style="font-size:13px;color:#b0a796;text-align:right;">14h 15m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 120px 140px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#e2b23c;"></span><span style="font-size:14px;font-weight:500;">Q3 Retainer</span><span class="mono" style="font-size:13px;color:#9a9082;">$110/hr</span><span class="mono" style="font-size:13px;color:#b0a796;text-align:right;">128h 00m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="CF" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">CF</span><span style="font-size: 15px; font-weight: 600;">Client · create / edit</span></div>
+        <div style="width: 460px; background: #1c1811; border: 1px solid #332c22; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7);">
+          <div style="font-size: 18px; font-weight: 700;">New client</div>
+          <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Name <span style="color:#c77b6a;">*</span></span><div class="field" style="border-radius:10px;">Acme Co</div></div>
+          <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Email <span style="color:#7b7264;">— optional</span></span><div class="field" style="border-radius:10px;"><span style="color:#9a9082;">ap@acme.co</span></div></div>
+          <div style="display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px;"><span class="btn-o">Cancel</span><span class="btn">Save client</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== PROJECTS ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— PROJECTS</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start;">
+
+      <div id="PL" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">PL</span><span style="font-size: 15px; font-weight: 600;">Projects · list</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navon">Projects</span><span class="navlink">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; min-height: 500px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size: 22px; font-weight: 700;">Projects</div><div style="display:flex;align-items:center;gap:10px;"><div class="field" style="width:200px;border-radius:9px;padding:8px 12px;font-size:13px;"><span style="color:#9a9082;">All clients</span><span style="color:#7b7264;">▾</span></div><span class="btn">+ New project</span></div></div>
+            <div class="card" style="overflow: hidden;">
+              <div style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span></span><span>Project</span><span>Client</span><span>Rate</span><span style="text-align:right;">Unbilled hrs</span><span></span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:14px;font-weight:500;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co</span><span class="mono" style="font-size:13px;">$95</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">12h 30m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;"></span><span style="font-size:14px;font-weight:500;">Website Copy</span><span style="font-size:13px;color:#9a9082;">Bright Media</span><span class="mono" style="font-size:13px;">$80</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">9h 45m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#f27db4;"></span><span style="font-size:14px;font-weight:500;">Mobile App</span><span style="font-size:13px;color:#9a9082;">Northwind</span><span class="mono" style="font-size:13px;">$110</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">5h 30m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#a6e24d;"></span><span style="font-size:14px;font-weight:500;">Brand System</span><span style="font-size:13px;color:#9a9082;">Lumen Labs</span><span class="mono" style="font-size:13px;">$120</span><span class="mono" style="font-size:13.5px;text-align:right;color:var(--accent,#e8975a);">2h 15m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:16px 1fr 160px 100px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span style="width:10px;height:10px;border-radius:50%;background:#9aa6b2;"></span><span style="font-size:14px;font-weight:500;">Internal Ops</span><span style="font-size:13px;color:#7b7264;">— (self)</span><span class="mono" style="font-size:13px;color:#7b7264;">—</span><span class="mono" style="font-size:13.5px;text-align:right;color:#7b7264;">0h 00m</span><span style="text-align:right;color:#7b7264;">›</span></div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="PD" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">PD</span><span style="font-size: 15px; font-weight: 600;">Project · detail</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navon">Projects</span><span class="navlink">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; min-height: 500px;">
+            <div style="font-size: 12.5px; color: #7b7264;"><a href="#PL">Projects</a>   <span style="color:#4a4030;">/</span> Acme Redesign</div>
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; border-left: 4px solid #56c7d6; padding-left: 16px;"><div style="display:flex;flex-direction:column;gap:5px;"><div style="display:flex;align-items:center;gap:10px;"><span style="font-size:24px;font-weight:700;">Acme Redesign</span></div><span style="font-size:13px;color:#9a9082;"><a href="#CD">Acme Co</a> · $95/hr</span></div><div style="display:flex;gap:10px;"><span class="btn-o">Edit</span><a href="#IL" style="text-decoration:none;"><span class="btn-o">View invoices</span></a><span class="btn">▸ Start timer</span></div></div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;"><div class="stat"><span class="flabel">Total hours</span><span class="mono" style="font-size:22px;font-weight:700;">14h 15m</span><span style="font-size:11px;color:#7b7264;">incl. non-billable</span></div><div class="stat"><span class="flabel">Unbilled hours</span><span class="mono" style="font-size:22px;font-weight:700;">12h 30m</span></div><div class="stat"><span class="flabel">Unbilled amount</span><span class="mono" style="font-size:22px;font-weight:700;color:var(--accent,#e8975a);">$1,187</span></div></div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-size: 15px; font-weight: 600;">Recent time entries</div>
+              <div class="card" style="overflow:hidden;">
+                <div class="row-h" style="display:grid;grid-template-columns:90px 150px 84px 1fr auto;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);border-left:3px solid var(--accent,#e8975a);background:rgba(232,151,90,0.09);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1:00 PM – now</span><span class="mono" style="font-size:13.5px;font-weight:600;color:var(--accent,#e8975a);">{{ running }}</span><span style="font-size:12.5px;color:#b0a796;">Hero section polish</span><span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);">RUNNING</span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:90px 150px 84px 1fr auto;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">9:15 – 11:00 AM</span><span class="mono" style="font-size:13.5px;">1h 45m</span><span style="font-size:12.5px;color:#b0a796;">Nav + footer build</span><span></span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:90px 150px 84px 1fr auto;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 09</span><span class="mono" style="font-size:12.5px;color:#9a9082;">3:00 – 4:45 PM</span><span class="mono" style="font-size:13.5px;">1h 45m</span><span style="font-size:12.5px;color:#b0a796;">Kickoff sync</span><span class="tag" style="color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span></div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="PF" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">PF</span><span style="font-size: 15px; font-weight: 600;">Project · create / edit</span><span style="font-size: 13px; color: #7b7264;">— color is identity</span></div>
+        <div style="width: 480px; background: #1c1811; border: 1px solid #332c22; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7);">
+          <div style="font-size: 18px; font-weight: 700;">New project</div>
+          <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Project name <span style="color:#c77b6a;">*</span></span><div class="field" style="border-radius:10px;">Acme Redesign</div></div>
+          <div style="display: flex; gap: 12px;"><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Client <span style="color:#c77b6a;">*</span></span><div class="field" style="border-radius:10px;"><span>Acme Co</span><span style="color:#7b7264;">▾</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Hourly rate <span style="color:#c77b6a;">*</span></span><div class="field" style="border-radius:10px;"><span style="color:#7b7264;">$</span><span class="mono" style="margin-left:auto;">95.00</span></div></div></div>
+          <div style="display: flex; flex-direction: column; gap: 9px;">
+            <span class="flabel">Project color <span style="color:#7b7264;"></span></span>
+            <div style="display: flex; gap: 10px; align-items: center;"><div class="field" style="flex:1;border-radius:10px;gap:10px;justify-content:flex-start;"><span style="width:16px;height:16px;border-radius:50%;background:#56c7d6;"></span><span class="mono">#56C7D6</span></div><div title="Pick from screen" style="width:44px;height:44px;border:1px solid #332c22;border-radius:10px;background:#191510;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9cfbf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 3.5a2.12 2.12 0 0 1 3 3L18 9l-3-3 2.5-2.5z"></path><path d="m15 6-9.5 9.5a2 2 0 0 0-.5.9L4 20l3.6-1a2 2 0 0 0 .9-.5L18 9"></path></svg></div></div>
+            <div style="display: flex; align-items: center; gap: 10px;"><span style="font-size: 12px; color: #7b7264;">Suggestions</span><div style="display:flex;gap:8px;"><span style="width:22px;height:22px;border-radius:50%;background:#56c7d6;box-shadow:0 0 0 2px #1c1811,0 0 0 3px #56c7d6;"></span><span style="width:22px;height:22px;border-radius:50%;background:#a78bfa;"></span><span style="width:22px;height:22px;border-radius:50%;background:#f27db4;"></span></div></div>
+            
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px;"><span class="btn-o">Cancel</span><span class="btn">Save project</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== INVOICING ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— INVOICING</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start;">
+
+      <div id="IP" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">IP</span><span style="font-size: 15px; font-weight: 600;">Invoice · preview &amp; generate</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navon">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; min-height: 500px;">
+            <div style="display:flex;flex-direction:column;gap:4px;"><div style="font-size: 22px; font-weight: 700;">New invoice</div><div style="font-size:13px;color:#9a9082;">Unbilled billable time — untick any row to exclude</div></div>
+            <div style="display:flex;align-items:center;gap:12px;"><span class="flabel">Project</span><div class="field" style="width:280px;border-radius:10px;gap:10px;justify-content:flex-start;"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:13.5px;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">· Acme Co</span><span style="margin-left:auto;color:#7b7264;">▾</span></div></div>
+            <div class="card" style="overflow: hidden;">
+              <div style="display:grid;grid-template-columns:34px 90px 1fr 90px 110px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span></span><span>Date</span><span>Description</span><span style="text-align:right;">Hours</span><span style="text-align:right;">Amount</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:34px 90px 1fr 90px 110px;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);"><span style="width:18px;height:18px;border-radius:5px;background:var(--accent,#e8975a);color:#17130e;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">✓</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span style="font-size:13px;color:#b0a796;">Nav + footer build</span><span class="mono" style="font-size:13px;text-align:right;">1.75</span><span class="mono" style="font-size:13px;text-align:right;">$166.25</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:34px 90px 1fr 90px 110px;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);border-top:1px solid #2c261d;"><span style="width:18px;height:18px;border-radius:5px;background:var(--accent,#e8975a);color:#17130e;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">✓</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 10</span><span style="font-size:13px;color:#b0a796;">Component library pass</span><span class="mono" style="font-size:13px;text-align:right;">5.00</span><span class="mono" style="font-size:13px;text-align:right;">$475.00</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:34px 90px 1fr 90px 110px;gap:14px;align-items:center;padding:var(--rowpad,13px 18px);border-top:1px solid #2c261d;opacity:0.5;"><span style="width:18px;height:18px;border-radius:5px;border:1.5px solid #4a4030;"></span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 08</span><span style="font-size:13px;color:#b0a796;">Exploratory spike <span class="tag" style="color:#9a9082;border:1px solid #4a4030;margin-left:6px;">EXCLUDED</span></span><span class="mono" style="font-size:13px;text-align:right;">3.00</span><span class="mono" style="font-size:13px;text-align:right;">$285.00</span></div>
+              <div style="display:grid;grid-template-columns:34px 90px 1fr 90px 110px;gap:14px;align-items:center;padding:11px 18px;border-top:1px solid #2c261d;background:#191510;"><span></span><span class="mono" style="font-size:12.5px;color:#7b7264;">Jul 14</span><span style="font-size:13px;color:#7b7264;">Hero section polish <span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);margin-left:6px;">RUNNING · EXCLUDED</span></span><span class="mono" style="font-size:13px;text-align:right;color:#7b7264;">—</span><span class="mono" style="font-size:13px;text-align:right;color:#7b7264;">—</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid #3b3325;border-radius:12px;background:linear-gradient(90deg,rgba(232,151,90,0.12),rgba(232,151,90,0.02));"><div style="display:flex;flex-direction:column;gap:2px;"><span style="font-size:12px;color:#9a9082;">2 of 3 entries · 6.75 hrs × $95.00</span><span style="font-size:12px;color:#7b7264;">Non-billable &amp; running time excluded automatically</span></div><div style="display:flex;align-items:center;gap:18px;"><span class="mono" style="font-size:24px;font-weight:700;color:var(--accent,#e8975a);">$641.25</span><span class="btn">Generate invoice</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="IL" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">IL</span><span style="font-size: 15px; font-weight: 600;">Invoices · list</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navon">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><div class="avatar">JD</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; min-height: 500px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size: 22px; font-weight: 700;">Invoices</div><span class="btn">+ New invoice</span></div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;"><div style="display:flex;gap:8px;"><span class="tag" style="background:#322a1f;color:#f6f1e8;padding:7px 12px;font-size:12px;">All</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Draft</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Sent</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Paid</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:10px;"><div class="field" style="width:170px;border-radius:9px;padding:8px 12px;font-size:13px;"><span style="color:#9a9082;">All clients</span><span style="color:#7b7264;">▾</span></div><div class="field" style="width:170px;border-radius:9px;padding:8px 12px;font-size:13px;"><span style="color:#9a9082;">All projects</span><span style="color:#7b7264;">▾</span></div></div></div>
+            <div class="card" style="overflow: hidden;">
+              <div style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span>Invoice</span><span>Date</span><span>Project</span><span>Client</span><span style="text-align:right;">Total</span><span style="text-align:center;">Status</span><span></span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);"><span class="mono" style="font-size:12.5px;">INV-1042</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span style="font-size:13.5px;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co</span><span class="mono" style="font-size:13.5px;text-align:right;">$641.25</span><span style="text-align:center;"><span class="tag" style="border:1px dashed #6a6152;color:#b0a796;">DRAFT</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;">INV-1041</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 08</span><span style="font-size:13.5px;">Website Copy</span><span style="font-size:13px;color:#9a9082;">Bright Media</span><span class="mono" style="font-size:13.5px;text-align:right;">$1,280.00</span><span style="text-align:center;"><span class="tag" style="border:1px solid #6f95c9;color:#a9c6ec;">SENT ↗</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;">INV-1039</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jun 30</span><span style="font-size:13.5px;">Mobile App</span><span style="font-size:13px;color:#9a9082;">Northwind</span><span class="mono" style="font-size:13.5px;text-align:right;">$3,300.00</span><span style="text-align:center;"><span class="tag" style="background:rgba(122,190,120,0.16);border:1px solid #5f9a5c;color:#93cf90;">PAID ✓</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#7b7264;text-decoration:line-through;">INV-1036</span><span class="mono" style="font-size:12.5px;color:#7b7264;">Jun 12</span><span style="font-size:13.5px;color:#7b7264;">Brand System</span><span style="font-size:13px;color:#7b7264;">Lumen Labs</span><span class="mono" style="font-size:13.5px;text-align:right;color:#7b7264;">$960.00</span><span style="text-align:center;"><span class="tag" style="border:1px solid #4a4030;color:#7b7264;">VOID ⊘</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="ID" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">ID</span><span style="font-size: 15px; font-weight: 600;">Invoice · detail</span></div>
+        <div class="frame" style="width: 1080px;">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-0.01em;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navon">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">JD</div></div></div>
+          <div style="padding: 16px 24px 0; font-size: 12.5px; color: #7b7264;"><a href="#IL">Invoices</a>   <span style="color:#4a4030;">/</span> INV-1042</div>
+          <div style="padding: 16px 24px 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #2c261d;">
+            <span style="font-size: 22px; font-weight: 700;">Invoice INV-1042</span>
+            <span class="tag" style="border:1px dashed #6a6152;color:#b0a796;">DRAFT</span>
+            <div style="margin-left: auto; display: flex; gap: 10px;">
+              <span class="btn-o">Void</span>
+              <span class="btn-o">⤓ Download PDF</span>
+              <span class="btn">Mark sent →</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: stretch; min-height: 440px;">
+            <div style="width: 280px; border-right: 1px solid #2c261d; padding: 22px 20px; display: flex; flex-direction: column; gap: 20px; background: #191510;">
+              <div class="mono" style="font-size: 11px; letter-spacing: 0.12em; color: #7b7264;">DETAILS</div>
+              <div style="display: flex; flex-direction: column; gap: 4px;"><span class="flabel">Client</span><span style="font-size: 14px;">Acme Co</span></div>
+              <div style="display: flex; flex-direction: column; gap: 4px;"><span class="flabel">Project</span><span style="font-size: 14px; display: flex; align-items: center; gap: 8px;"><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;"></span>Acme Redesign</span></div>
+              <div style="display: flex; flex-direction: column; gap: 4px;"><span class="flabel">Created</span><span class="mono" style="font-size: 13px;">Jul 20, 2026</span></div>
+              <div style="border-top: 1px solid #2c261d; padding-top: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <div class="mono" style="font-size: 11px; letter-spacing: 0.12em; color: #7b7264;">STATUS</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: flex; align-items: center; gap: 10px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--accent,#e8975a);"></span><span style="font-size: 13px; font-weight: 600;">Draft</span><span class="mono" style="font-size: 11px; color: #7b7264; margin-left: auto;">now</span></div>
+                  <div style="display: flex; align-items: center; gap: 10px;"><span style="width:10px;height:10px;border-radius:50%;border:1.5px solid #4a4030;"></span><span style="font-size: 13px; color: #7b7264;">Sent</span><span class="mono" style="font-size: 11px; color: #4a4030; margin-left: auto;">sentAt —</span></div>
+                  <div style="display: flex; align-items: center; gap: 10px;"><span style="width:10px;height:10px;border-radius:50%;border:1.5px solid #4a4030;"></span><span style="font-size: 13px; color: #7b7264;">Paid</span><span class="mono" style="font-size: 11px; color: #4a4030; margin-left: auto;">paidAt —</span></div>
+                </div>
+              </div>
+              
+            </div>
+            <div style="flex: 1; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px;">
+              <div style="font-size: 14px; font-weight: 600;">Line items</div>
+              <div class="card" style="overflow:hidden;">
+                <div style="display:grid;grid-template-columns:90px 1fr 80px 110px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span>Date</span><span>Description</span><span style="text-align:right;">Hours</span><span style="text-align:right;">Amount</span></div>
+                <div style="display:grid;grid-template-columns:90px 1fr 80px 110px;gap:14px;padding:12px 18px;border-bottom:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 11</span><span style="font-size:13px;color:#b0a796;">Design review + revisions</span><span class="mono" style="font-size:13px;text-align:right;">5.00</span><span class="mono" style="font-size:13px;text-align:right;">$475.00</span></div>
+                <div style="display:grid;grid-template-columns:90px 1fr 80px 110px;gap:14px;padding:12px 18px;border-bottom:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 12</span><span style="font-size:13px;color:#b0a796;">Nav + footer build</span><span class="mono" style="font-size:13px;text-align:right;">3.50</span><span class="mono" style="font-size:13px;text-align:right;">$332.50</span></div>
+                <div style="display:grid;grid-template-columns:90px 1fr 80px 110px;gap:14px;padding:12px 18px;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 12</span><span style="font-size:13px;color:#b0a796;">Component library setup</span><span class="mono" style="font-size:13px;text-align:right;">4.00</span><span class="mono" style="font-size:13px;text-align:right;">$380.00</span></div>
+              </div>
+              <div style="display: flex; justify-content: flex-end;">
+                <div style="width: 260px; display: flex; flex-direction: column; gap: 8px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 13px; color: #9a9082;"><span>Total hours</span><span class="mono">12.50h</span></div>
+                  <div style="display: flex; justify-content: space-between; font-size: 13px; color: #9a9082;"><span>Rate applied</span><span class="mono">$95.00 / hr</span></div>
+                  <div style="display: flex; justify-content: space-between; border-top: 1px solid #3b3325; padding-top: 8px; font-size: 17px; font-weight: 700;"><span>Total</span><span class="mono" style="color: var(--accent,#e8975a);">$1,187.50</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;color:#f6f1e8;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== REPORTING ==================================================== -->
+  
+
+  <!-- ==================================================== STATES ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— FORMS, DIALOGS &amp; STATES</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start;">
+
+      <div id="ME" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">ME</span><span style="font-size: 15px; font-weight: 600;">Manual time entry</span></div>
+        <div style="width: 620px; height: 480px; border: 1px solid #332c22; border-radius: 16px; background: #14100b; position: relative; overflow: hidden;">
+          <div style="position:absolute;inset:0;background:rgba(10,8,5,0.6);backdrop-filter:blur(2px);"></div>
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 460px; background: #1c1811; border: 1px solid #3b3325; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.9);">
+            <div style="font-size: 18px; font-weight: 700;">Add time entry</div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Project</span><div class="field" style="border-radius:10px;gap:10px;justify-content:flex-start;"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;"></span>Acme Redesign<span style="margin-left:auto;color:#7b7264;">▾</span></div></div>
+            <span class="flabel">Description</span><div class="field" style="border-radius:10px;"><span style="color:#9a9082;">QA + fixes</span></div><div style="display: flex; gap: 12px;"><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Date</span><div class="field" style="border-radius: 10px; width: 190px; height: 41px"><span class="mono">Jul 14, 2026</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Start</span><div class="field" style="border-radius:10px;"><span class="mono">2:00 PM</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">End</span><div class="field" style="border-radius:10px;"><span class="mono">4:30 PM</span></div></div></div>
+            <div style="display:flex;justify-content:flex-end;font-size:13px;color:#9a9082;margin-top:-4px;">Duration&nbsp; &nbsp;<span class="mono" style="color: rgb(246, 241, 232); font-weight: 600;">2h 30m</span></div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#191510;border:1px solid #2c261d;border-radius:10px;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:38px;height:22px;border-radius:11px;background:var(--accent,#e8975a);display:flex;align-items:center;padding:2px;"><div style="width:18px;height:18px;border-radius:50%;background:#17130e;margin-left:auto;"></div></div><span style="font-size:13px;">Billable</span></div></div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;"><span class="btn-o">Cancel</span><span class="btn">Save entry</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EE : edit an existing entry — opened via the ✎ Edit affordance on hover in 1a/1b -->
+      <div id="EE" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">EE</span><span style="font-size: 15px; font-weight: 600;">Time entry · edit</span><span style="font-size: 12.5px; color: #7b7264;">— same overlay as Add, reached by hovering a row and clicking ✎ Edit; pre-filled with that entry's data</span></div>
+        <div style="width: 620px; height: 480px; border: 1px solid #332c22; border-radius: 16px; background: #14100b; position: relative; overflow: hidden;">
+          <div style="position:absolute;inset:0;background:rgba(10,8,5,0.6);backdrop-filter:blur(2px);"></div>
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 460px; background: #1c1811; border: 1px solid #3b3325; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.9);">
+            <div style="font-size: 18px; font-weight: 700;">Edit time entry</div>
+            <div style="display: flex; flex-direction: column; gap: 7px;"><span class="flabel">Project</span><div class="field" style="border-radius:10px;gap:10px;justify-content:flex-start;"><span style="width:10px;height:10px;border-radius:50%;background:#a78bfa;"></span>Website Copy<span style="margin-left:auto;color:#7b7264;">▾</span></div></div>
+            <span class="flabel">Description</span><div class="field" style="border-radius:10px;"><span style="color:#f6f1e8;">Landing page draft</span></div><div style="display: flex; gap: 12px;"><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Date</span><div class="field" style="border-radius: 10px; width: 190px; height: 41px"><span class="mono">Jul 13, 2026</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Start</span><div class="field" style="border-radius:10px;"><span class="mono">10:00 AM</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">End</span><div class="field" style="border-radius:10px;"><span class="mono">4:00 PM</span></div></div></div>
+            <div style="display:flex;justify-content:flex-end;font-size:13px;color:#9a9082;margin-top:-4px;">Duration&nbsp; &nbsp;<span class="mono" style="color: rgb(246, 241, 232); font-weight: 600;">6h 00m</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#191510;border:1px solid #2c261d;border-radius:10px;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:38px;height:22px;border-radius:11px;background:var(--accent,#e8975a);display:flex;align-items:center;padding:2px;"><div style="width:18px;height:18px;border-radius:50%;background:#17130e;margin-left:auto;"></div></div><span style="font-size:13px;">Billable</span></div><span style="font-size:12px;color:#7b7264;">Not yet invoiced — safe to edit</span></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px;"><span style="font-size:13px;color:#e0917f;cursor:pointer;">Delete entry</span><div style="display: flex; gap: 10px;"><span class="btn-o">Cancel</span><span class="btn">Save changes</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="CN" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">CN</span><span style="font-size: 15px; font-weight: 600;">Confirmation dialogs</span></div>
+        <div style="width: 1080px; border: 1px solid #332c22; border-radius: 16px; background: rgba(10,8,5,0.5); padding: 40px; display: flex; gap: 22px; align-items: flex-start; justify-content: center;">
+          <div style="width: 320px; background: #1c1811; border: 1px solid #3b3325; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);"><span style="font-size: 16px; font-weight: 700;">Mark invoice paid?</span><span style="font-size: 13px; color: #b0a796; line-height: 1.5;">INV-1041 · Bright Media · <span class="mono">$1,280.00</span>. This records the paid date and moves it out of outstanding.</span><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;"><span class="btn-o">Cancel</span><span class="btn">Mark paid</span></div></div>
+          <div style="width: 320px; background: #1c1811; border: 1px solid #3b3325; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);"><span style="font-size: 16px; font-weight: 700;">Void this invoice?</span><span style="font-size: 13px; color: #b0a796; line-height: 1.5;">INV-1042 is a draft. Voiding releases its 2 entries back to unbilled. This can't be undone.</span><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;"><span class="btn-o">Cancel</span><span style="border:1px solid #7a3b32;color:#e0917f;padding:8px 15px;font-size:13px;border-radius:9px;background:rgba(122,59,50,0.18);">Void invoice</span></div></div>
+          <div style="width: 320px; background: #1c1811; border: 1px solid #3b3325; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);"><span style="font-size: 16px; font-weight: 700;">Delete time entry?</span><span style="font-size: 13px; color: #b0a796; line-height: 1.5;">Jul 14 · <span class="mono">1h 45m</span> · Nav + footer build. It will stop counting toward project totals.</span><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;"><span class="btn-o">Cancel</span><span style="border:1px solid #7a3b32;color:#e0917f;padding:8px 15px;font-size:13px;border-radius:9px;background:rgba(122,59,50,0.18);">Delete</span></div></div>
+        </div>
+      </div>
+
+      <div id="ES" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">ES</span><span style="font-size: 15px; font-weight: 600;">Empty states</span></div>
+        <div style="width: 720px; display: flex; gap: 22px;">
+          <div class="card" style="flex:1;min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;"><div style="width:56px;height:56px;border:1.5px dashed #4a4030;border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--accent,#e8975a);font-size:24px;">◔</div><span style="font-size:16px;font-weight:600;">No time tracked yet</span><span style="font-size:13px;color:#9a9082;line-height:1.5;max-width:240px;">Start a timer or add an entry by hand. Everything you bill starts here.</span><span class="btn">▸ Start a timer</span><span class="btn-o">+ Add manually</span></div>
+          <div class="card" style="flex:1;min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;"><div style="width:56px;height:56px;border:1.5px dashed #4a4030;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#7b7264;font-size:24px;">⦰</div><span style="font-size:16px;font-weight:600;">No entries match these filters</span><span style="font-size:13px;color:#9a9082;line-height:1.5;max-width:240px;">Try widening the date range or clearing the client filter.</span><span class="btn-o">Clear filters</span></div>
+        </div>
+      </div>
+
+      <div id="ER" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">ER</span><span style="font-size: 15px; font-weight: 600;">Error &amp; 404</span></div>
+        <div style="width: 720px; display: flex; gap: 22px;">
+          <div class="card" style="flex:1;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;"><div style="width:56px;height:56px;border:1.5px solid #7a3b32;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#e0917f;font-size:24px;">!</div><span style="font-size:16px;font-weight:600;">Something went wrong</span><span style="font-size:13px;color:#9a9082;line-height:1.5;max-width:260px;">We couldn't load this page. Your tracked time is safe.</span><span class="btn">Try again</span></div>
+          <div class="card" style="flex:1;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;"><div class="mono" style="font-size:40px;font-weight:700;color:#4a4030;">404</div><span style="font-size:16px;font-weight:600;">Page not found</span><span style="font-size:13px;color:#9a9082;line-height:1.5;max-width:240px;">That link doesn't lead anywhere in Soloclock.</span><a href="#DB"><span class="btn">Back to dashboard</span></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== RESPONSIVE ==================================================== -->
+  <section style="display: flex; flex-direction: column; gap: 26px; align-items: flex-start;">
+    <div class="mono" style="font-size: 12px; letter-spacing: 0.18em; color: #7b7264;">— RESPONSIVE · 390px</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start;">
+
+      <div id="MB" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">MB</span><span style="font-size: 15px; font-weight: 600;">Mobile · timesheet</span></div>
+        <div style="width: 390px; height: 760px; background: #1c1811; border: 1px solid #332c22; border-radius: 30px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.7);">
+          <div style="height: 54px; border-bottom: 1px solid #2c261d; display: flex; align-items: center; padding: 0 18px; gap: 14px; background: #17130d;"><span style="font-size:20px;color:#9a9082;">≡</span><span style="display:flex;align-items:center;gap:8px;font-weight:700;"><span style="width:11px;height:11px;border-radius:50%;background:var(--accent,#e8975a);"></span>soloclock</span><span style="margin-left:auto;" class="avatar">JD</span></div>
+          <div style="flex: 1; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:19px;font-weight:700;">Timesheet</span><div class="field" style="width:auto;border-radius:8px;padding:6px 10px;font-size:12px;gap:6px;">This week ▾</div></div>
+            <div style="display:flex;gap:8px;"><div class="stat" style="flex:1;padding:10px 12px;gap:2px;"><span style="font-size:10.5px;color:#7b7264;">Tracked</span><span class="mono" style="font-size:14px;font-weight:600;">38h 30m</span></div><div class="stat" style="flex:1;padding:10px 12px;gap:2px;"><span style="font-size:10.5px;color:#7b7264;">Unbilled</span><span class="mono" style="font-size:14px;font-weight:600;color:var(--accent,#e8975a);">31h 00m</span></div></div>
+            <div style="background:#221d15;border:1px solid #2c261d;border-radius:9px;padding:8px 12px;display:flex;justify-content:space-between;"><span style="font-size:13px;font-weight:600;">Mon · Jul 14</span><span class="mono" style="font-size:12.5px;color:#b0a796;">8h 30m</span></div>
+            <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:7px;border-left:3px solid var(--accent,#e8975a);"><div style="display:flex;align-items:center;gap:8px;"><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:13.5px;font-weight:500;">Acme Redesign</span><span class="tag" style="margin-left:auto;color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);">RUNNING</span></div><div style="display:flex;justify-content:space-between;"><span class="mono" style="font-size:12px;color:#9a9082;">1:00 PM – now</span><span class="mono" style="font-size:13.5px;color:var(--accent,#e8975a);font-weight:600;">{{ running }}</span></div><span style="font-size:12px;color:#b0a796;">Hero section polish</span></div>
+            <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:7px;"><div style="display:flex;align-items:center;gap:8px;"><span style="width:9px;height:9px;border-radius:50%;background:#9aa6b2;"></span><span style="font-size:13.5px;">Internal Ops</span><span class="tag" style="margin-left:auto;color:#9a9082;border:1px solid #4a4030;">NON-BILLABLE</span></div><div style="display:flex;justify-content:space-between;"><span class="mono" style="font-size:12px;color:#9a9082;">2:00 – 4:00 PM</span><span class="mono" style="font-size:13.5px;">2h 00m</span></div><span style="font-size:12px;color:#b0a796;">Admin / email</span></div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(90deg,rgba(232,151,90,0.18),rgba(232,151,90,0.06));border-top:1px solid #3b3325;"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;"></span><span style="width:8px;height:8px;border-radius:50%;background:#56c7d6;"></span><span style="font-size:13px;font-weight:600;">Acme Redesign</span><span class="mono" style="margin-left:auto;font-size:16px;font-weight:600;">{{ running }}</span><span style="width:30px;height:30px;border-radius:8px;border:1px solid #4a4030;background:#221d15;display:flex;align-items:center;justify-content:center;"><span style="width:9px;height:9px;background:var(--accent,#e8975a);border-radius:2px;"></span></span></div></sc-if>
+        </div>
+      </div>
+
+      <div id="MD" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">MD</span><span style="font-size: 15px; font-weight: 600;">Mobile · nav drawer</span></div>
+        <div style="width: 390px; height: 760px; border: 1px solid #332c22; border-radius: 30px; overflow: hidden; position: relative; background: #14100b;">
+          <div style="position:absolute;inset:0;background:rgba(8,6,4,0.62);"></div>
+          <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 280px; background: #1a160f; border-right: 1px solid #3b3325; padding: 22px 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: 30px 0 60px -20px rgba(0,0,0,0.7);">
+            <div style="display:flex;align-items:center;gap:9px;font-weight:700;margin-bottom:14px;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);"></span>soloclock</div>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;color:#9a9082;">Dashboard</span>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;background:#262019;color:#f6f1e8;font-weight:600;">Timesheet</span>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;color:#9a9082;">Clients</span>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;color:#9a9082;">Projects</span>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;color:#9a9082;">Invoices</span>
+            <span style="padding:12px 14px;border-radius:10px;font-size:15px;color:#9a9082;">Reports</span>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:16px;border-top:1px solid #2c261d;"><div class="avatar">JD</div><div style="display:flex;flex-direction:column;"><span style="font-size:13px;">Jordan Diaz</span><span style="font-size:11px;color:#7b7264;">jordan@studio.co</span></div><span style="margin-left:auto;font-size:13px;color:#9a9082;">Log out</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 2560, &quot;height&quot;: 1500 },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#d98e6a&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#e8975a&quot;, &quot;#de7a4f&quot;, &quot;#e0a54e&quot;, &quot;#d98e6a&quot;] },
+  &quot;timerRunning&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;compact&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  state = { elapsed: 4364 };
+  componentDidMount() {
+    this._t = setInterval(() => {
+      if (this.props.timerRunning === false) return;
+      this.setState(s => ({ elapsed: s.elapsed + 1 }));
+    }, 1000);
+  }
+  componentWillUnmount() { clearInterval(this._t); }
+  fmt(s) {
+    const p = n => String(n).padStart(2, '0');
+    return p(Math.floor(s / 3600)) + ':' + p(Math.floor((s % 3600) / 60)) + ':' + p(s % 60);
+  }
+  renderVals() {
+    const running = this.props.timerRunning !== false;
+    return {
+      accent: this.props.accent ?? '#e8975a',
+      rowPad: this.props.compact ? '9px 16px' : '13px 16px',
+      isRunning: running,
+      isIdle: !running,
+      running: this.fmt(this.state.elapsed)
+    };
+  }
+}
+</script>
+</body>
+</html>
