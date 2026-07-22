@@ -8,20 +8,43 @@
   --color-foreground: #f6f1e8;
   --color-muted: #9a9082;
   --color-accent: #e8975a;
+  --color-accent-hover: #f0a468;
   --color-accent-foreground: #17130e;
 
-  --color-card: #1c1811;
+  --color-card: #1e1a13;
+  --color-stat: #211c15;
+  --color-btn-secondary: #221d15;
   --color-field: #17130d;
   --color-subtle: #7b7264;
   --color-border-strong: #3b3325;
   --color-border-muted: #4a4030;
+  --color-border-field: #332c22;
 
   --color-danger: #e0917f;
   --color-danger-border: #7a3b32;
+  --color-danger-bg: rgba(122, 59, 50, 0.18);
+  --color-danger-bg-hover: rgba(122, 59, 50, 0.3);
+  --color-danger-text: #c77b6a;
+
+  --color-accent-border: rgba(232, 151, 90, 0.4);
+  --color-accent-ring: rgba(232, 151, 90, 0.18);
+
   --color-status-sent: #a9c6ec;
+  --color-status-sent-border: #6f95c9;
   --color-status-paid: #93cf90;
+  --color-status-paid-border: #5f9a5c;
+  --color-status-paid-bg: rgba(122, 190, 120, 0.16);
+  --color-status-draft: #b0a796;
+  --color-status-draft-border: #6a6152;
+
+  --color-avatar-from: #3a3226;
+  --color-avatar-to: #2a251c;
+  --color-avatar-text: #d9cfbf;
 
   --radius-ui: 8px;
+  --radius-btn: 9px;
+  --radius-tag: 6px;
+  --radius-field: 10px;
   --radius-card: 12px;
   --spacing-nav: 232px;
 
