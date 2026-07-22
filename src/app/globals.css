@@ -1,23 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #ffffff;
-  --color-surface: #f7f7f8;
-  --color-surface-hover: #eeeef1;
-  --color-border: #e4e4e7;
-  --color-foreground: #18181b;
-  --color-muted: #71717a;
-  --color-accent: #4f46e5;
-  --color-accent-foreground: #ffffff;
+  --color-background: #100c08;
+  --color-surface: #191510;
+  --color-surface-hover: #262019;
+  --color-border: #2c261d;
+  --color-foreground: #f6f1e8;
+  --color-muted: #9a9082;
+  --color-accent: #e8975a;
+  --color-accent-foreground: #17130e;
+
+  --color-card: #1c1811;
+  --color-field: #17130d;
+  --color-subtle: #7b7264;
+  --color-border-strong: #3b3325;
+  --color-border-muted: #4a4030;
+
+  --color-danger: #e0917f;
+  --color-danger-border: #7a3b32;
+  --color-status-sent: #a9c6ec;
+  --color-status-paid: #93cf90;
 
   --radius-ui: 8px;
+  --radius-card: 12px;
   --spacing-nav: 232px;
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+    var(--font-figtree), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
   --font-mono:
-    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    var(--font-plex-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, monospace;
 }
 
 @layer base {
@@ -39,5 +52,9 @@
   h2,
   h3 {
     line-height: 1.25;
+  }
+
+  ::selection {
+    background: rgba(232, 151, 90, 0.25);
   }
 }
