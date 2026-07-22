@@ -1,0 +1,77 @@
+// Soloclock — freelance invoice & time tracker
+// Core entities: User -> Client -> Project -> TimeEntry -> Invoice
+// Ownership lives on Client only; Project/TimeEntry/Invoice resolve their
+// owner through the Client relation and carry no userId of their own.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // hashed, never plaintext
+  clients   Client[]
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  email     String?
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  projects  Project[]
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Project {
+  id          String      @id @default(cuid())
+  name        String
+  hourlyRate  Decimal
+  color       String // #RRGGBB
+  client      Client      @relation(fields: [clientId], references: [id])
+  clientId    String
+  timeEntries TimeEntry[]
+  invoices    Invoice[]
+
+  @@index([clientId])
+}
+
+model TimeEntry {
+  id          String    @id @default(cuid())
+  project     Project   @relation(fields: [projectId], references: [id])
+  projectId   String
+  startedAt   DateTime
+  endedAt     DateTime? // null represents a currently running timer
+  description String?
+  billable    Boolean   @default(true)
+  billed      Boolean   @default(false)
+  invoice     Invoice?  @relation(fields: [invoiceId], references: [id])
+  invoiceId   String?
+
+  @@index([projectId])
+  @@index([invoiceId])
+}
+
+model Invoice {
+  id          String      @id @default(cuid())
+  project     Project     @relation(fields: [projectId], references: [id])
+  projectId   String
+  status      String      @default("draft") // draft, sent, paid, void
+  totalAmount Decimal
+  timeEntries TimeEntry[]
+  createdAt   DateTime    @default(now())
+  sentAt      DateTime?
+  paidAt      DateTime?
+
+  @@index([projectId])
+}
