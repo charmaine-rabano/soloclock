@@ -60,7 +60,7 @@ Context: the core entities (User → Client → Project → TimeEntry → Invoic
 
 Acceptance Criteria:
 
-- [ ] `User`, `Client`, `Project`, `TimeEntry`, and `Invoice` models match the agreed schema, including `Project.color` (`#RRGGBB`, required, server-side default) and `Invoice.sentAt` / `paidAt` (nullable timestamps)
+- [ ] `User`, `Client`, `Project`, `TimeEntry`, and `Invoice` models match the agreed schema
 - [ ] `TimeEntry.endedAt` is nullable to represent a running timer
 - [ ] `TimeEntry.invoiceId` is nullable so unbilled entries are valid
 - [ ] `TimeEntry.billable` defaults to `true`, and is independent of `billed`
@@ -68,14 +68,17 @@ Acceptance Criteria:
 - [ ] Migration applies cleanly to an empty database
 - [ ] Prisma Studio shows all tables with expected relations
 
-### SC-FND-04 — Deploy to Vercel with a working preview pipeline
+### SC-FND-04 — Deploy to Vercel with working prod and dev environments
+
+Context: two environments — prod deploys from `main`, dev deploys from a long-lived `dev` branch. Each needs its own environment variables, so they must point at separate Supabase projects/databases rather than sharing one.
 
 Acceptance Criteria:
 
-- [ ] Repo connected to Vercel, production deploy succeeds from the default branch
-- [ ] Environment variables set for both preview and production
+- [ ] Repo connected to Vercel, production deploy succeeds from `main`
+- [ ] Dev deploy succeeds from the `dev` branch, served on its own Vercel environment/URL
+- [ ] Environment variables set separately for prod and dev (including separate `DATABASE_URL`/`DIRECT_URL` per environment)
 - [ ] Prisma generate runs as part of the build (no stale-client build failures)
-- [ ] Deployed URL loads the app shell without runtime errors
+- [ ] Both deployed URLs load the app shell without runtime errors
 
 ### SC-FND-05 — Build the shared UI component library
 
