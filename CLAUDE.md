@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Soloclock — a freelance invoice & time tracker for solo contractors: manage clients, track time per project, generate invoices from unbilled hours. Next.js App Router + TypeScript (strict), Tailwind CSS v4, Postgres on Supabase via Prisma, deployed on Vercel. Auth.js (M1) and `@react-pdf/renderer` (M7) are planned but not yet installed.
 
-The repo is currently the M0 scaffold: every route under `src/app/(app)/` is a placeholder shell that renders a `Placeholder` block naming the module that will fill it in.
+The repo is currently the M0 scaffold: every route under `src/app/(app)/` is a placeholder shell that renders a `<div>` naming the module that will fill it in.
 
 ## Commands
 
