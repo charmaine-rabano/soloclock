@@ -85,4 +85,4 @@ Feature work is broken into modules M0–M9 with ticket IDs like `SC-INV-03`.
 
 If you find that something here no longer matches the code — a renamed path, a dropped or added script, a changed convention, a stated fact you verified to be wrong — say so and ask the user whether to update CLAUDE.md, rather than silently working around it or editing the file unprompted. Report the specific line and what the code actually does. Drift is only worth raising once confirmed against the code, not on a hunch.
 
-Whenever you do edit this file, set **Last updated** at the top to the current date. A stale date is worse than none, since it implies the content was checked more recently than it was.
+Whenever you do edit this file, set **Last updated** at the top to the current date.
