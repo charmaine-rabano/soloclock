@@ -36,6 +36,12 @@ export const ICONS = {
       <path d="m18 17-5-5 5-5" />
     </>
   ),
+  "chevrons-right": (
+    <>
+      <path d="m6 17 5-5-5-5" />
+      <path d="m13 17 5-5-5-5" />
+    </>
+  ),
   clock: (
     <>
       <circle cx="12" cy="12" r="9" />

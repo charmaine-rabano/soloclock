@@ -41,11 +41,23 @@
   --color-avatar-to: #2a251c;
   --color-avatar-text: #d9cfbf;
 
+  --color-dialog: #1c1811;
+  --color-drawer: #1a160f;
+  --color-segment-active: #322a1f;
+  --color-border-child: #241f17;
+  --color-body: #b0a796;
+  --color-faint: #8a8072;
+  --color-scrim: rgba(10, 8, 5, 0.6);
+  --color-auth-from: #221b12;
+  --color-auth-to: #14100b;
+
   --radius-ui: 8px;
   --radius-btn: 9px;
   --radius-tag: 6px;
   --radius-field: 10px;
   --radius-card: 12px;
+  --radius-lg: 14px;
+  --radius-modal: 16px;
   --spacing-nav: 232px;
 
   --font-sans:
@@ -54,6 +66,20 @@
   --font-mono:
     var(--font-plex-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, monospace;
+
+  --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.55);
+  }
 }
 
 @layer base {

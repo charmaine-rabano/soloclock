@@ -1,17 +1,52 @@
 import { Icon, iconNames } from "@/components/icons";
+import { MobileShell } from "@/components/layout/mobile-shell";
+import { RunningTimerBar } from "@/components/layout/running-timer-bar";
+import { TopNav } from "@/components/layout/top-nav";
 import {
+  AuthCard,
   Avatar,
+  BarChart,
+  Breadcrumb,
   Button,
   Card,
+  ChartLegend,
+  DateField,
+  EmptyState,
+  EntryRow,
+  ErrorState,
   Field,
+  FieldGroup,
   FieldLabel,
+  FormRow,
+  GroupHeader,
+  InlineFormError,
+  KpiRow,
   Logo,
+  PageHeader,
   ProjectDot,
+  Select,
   StatCard,
+  StatusTimeline,
+  SummaryTotals,
+  Table,
+  TableHeader,
+  TableRow,
   Tag,
   type TagStatus,
+  TimeField,
 } from "@/components/ui";
 import { cn } from "@/lib/cn";
+
+import {
+  CheckboxDemo,
+  CollapsibleGroupRowDemo,
+  ColorPickerDemo,
+  ConfirmDialogDemo,
+  FilterRailDemo,
+  ModalDemo,
+  SegmentedControlDemo,
+  ToggleDemo,
+} from "./demos";
 
 export const metadata = { title: "Reference" };
 
@@ -42,6 +77,15 @@ const projectColors = [
   "#a6e24d",
   "#9aa6b2",
   "#e2b23c",
+];
+
+const chartData = [
+  { month: "Feb", billed: 3200, collected: 3200 },
+  { month: "Mar", billed: 4100, collected: 3900 },
+  { month: "Apr", billed: 3600, collected: 3600 },
+  { month: "May", billed: 4800, collected: 4200 },
+  { month: "Jun", billed: 4400, collected: 4400 },
+  { month: "Jul", billed: 5200, collected: 3100, current: true },
 ];
 
 function Section({
@@ -231,6 +275,383 @@ export default function ReferencePage() {
         <div className="flex items-center gap-8">
           <Logo size="md" />
           <Logo size="sm" />
+        </div>
+      </Section>
+
+      {/* Form controls */}
+
+      <Section title="Select">
+        <div className="grid max-w-md gap-4">
+          <Select
+            defaultValue="acme-redesign"
+            options={[
+              {
+                value: "acme-redesign",
+                label: "Acme Redesign",
+                color: "#56c7d6",
+                sublabel: "Acme Co",
+              },
+              {
+                value: "q3-retainer",
+                label: "Q3 Retainer",
+                color: "#e2b23c",
+                sublabel: "Acme Co",
+              },
+              {
+                value: "website-copy",
+                label: "Website Copy",
+                color: "#a78bfa",
+                sublabel: "Bright Media",
+              },
+              {
+                value: "internal-ops",
+                label: "Internal Ops",
+                color: "#9aa6b2",
+                sublabel: "Internal",
+              },
+            ]}
+          />
+          <Select
+            compact
+            defaultValue="all"
+            options={[
+              { value: "all", label: "All clients", separatorAfter: true },
+              { value: "acme", label: "Acme Co" },
+              { value: "bright", label: "Bright Media" },
+              { value: "northwind", label: "Northwind" },
+              { value: "lumen", label: "Lumen Labs" },
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section title="Date & time fields">
+        <FormRow className="max-w-md">
+          <FieldGroup>
+            <FieldLabel>Date</FieldLabel>
+            <DateField defaultValue="2026-07-14" />
+          </FieldGroup>
+          <FieldGroup>
+            <FieldLabel>Start</FieldLabel>
+            <TimeField
+              defaultValue="2:00"
+              defaultMeridiem="PM"
+              aria-label="Start"
+            />
+          </FieldGroup>
+          <FieldGroup>
+            <FieldLabel>End</FieldLabel>
+            <TimeField
+              defaultValue="3:25"
+              defaultMeridiem="PM"
+              aria-label="End"
+            />
+          </FieldGroup>
+        </FormRow>
+      </Section>
+
+      <Section title="Toggle">
+        <div className="max-w-xs">
+          <ToggleDemo />
+        </div>
+      </Section>
+
+      <Section title="Checkbox">
+        <CheckboxDemo />
+      </Section>
+
+      <Section
+        title="SegmentedControl"
+        description={'The "Group by" Day/Project selector.'}
+      >
+        <SegmentedControlDemo />
+      </Section>
+
+      <Section title="ColorPicker">
+        <ColorPickerDemo />
+      </Section>
+
+      {/* Navigation & shell */}
+
+      <Section
+        title="TopNav"
+        description="The 60px authenticated header — wired into the (app) route group's layout."
+      >
+        <div className="overflow-hidden rounded-card border border-border-field">
+          <TopNav />
+        </div>
+      </Section>
+
+      <Section
+        title="Mobile header & drawer"
+        description="Click the hamburger to preview the drawer; the header swaps in below the md breakpoint."
+      >
+        <div className="max-w-sm overflow-hidden rounded-card border border-border-field">
+          <MobileShell />
+        </div>
+      </Section>
+
+      <Section
+        title="RunningTimerBar"
+        description="The live footer bar, gated on isRunning in M6."
+      >
+        <div className="overflow-hidden rounded-card border border-border-field">
+          <RunningTimerBar
+            projectColor="#56c7d6"
+            projectName="Acme Redesign"
+            clientLabel="Acme Co"
+            descriptionLabel="Hero section polish"
+            elapsed="01:12:44"
+          />
+        </div>
+      </Section>
+
+      <Section title="Breadcrumb">
+        <Breadcrumb
+          items={[{ label: "Clients", href: "/clients" }, { label: "Acme Co" }]}
+        />
+      </Section>
+
+      <Section title="PageHeader">
+        <PageHeader
+          title="Acme Co"
+          subtitle="4 active projects · $1,240 unbilled"
+          rail="#56c7d6"
+          actions={<Button variant="secondary">Edit client</Button>}
+        />
+      </Section>
+
+      <Section title="FilterRail">
+        <FilterRailDemo />
+      </Section>
+
+      {/* Data display */}
+
+      <Section title="Table">
+        <Table>
+          <TableHeader columns="1fr 220px 120px 130px 40px">
+            <span>Client</span>
+            <span>Email</span>
+            <span>Projects</span>
+            <span className="text-right">Unbilled</span>
+            <span />
+          </TableHeader>
+          <TableRow columns="1fr 220px 120px 130px 40px" first>
+            <span className="font-medium">Acme Co</span>
+            <span className="text-muted">billing@acme.co</span>
+            <span className="text-muted">4</span>
+            <span className="text-right font-mono text-accent">$1,240</span>
+            <Icon
+              name="chevron-right"
+              size={14}
+              className="ml-auto text-subtle"
+            />
+          </TableRow>
+          <TableRow columns="1fr 220px 120px 130px 40px">
+            <span className="font-medium">Northwind Traders</span>
+            <span className="text-muted">ap@northwind.co</span>
+            <span className="text-muted">2</span>
+            <span className="text-right font-mono text-accent">$480</span>
+            <Icon
+              name="chevron-right"
+              size={14}
+              className="ml-auto text-subtle"
+            />
+          </TableRow>
+        </Table>
+      </Section>
+
+      <Section
+        title="EntryRow"
+        description="The time-entry row — running rows get an accent left rail."
+      >
+        <Table>
+          <EntryRow
+            first
+            running
+            projectColor="#56c7d6"
+            projectName="Acme Redesign"
+            clientName="Acme Co"
+            timeRange="2:00 PM – now"
+            duration="1h 12m"
+            description="Hero section polish"
+            trailing={<Tag status="running">RUNNING</Tag>}
+          />
+          <EntryRow
+            projectColor="#a78bfa"
+            projectName="Website Copy"
+            clientName="Northwind Traders"
+            timeRange="9:00 AM – 10:15 AM"
+            duration="1h 15m"
+            description="Homepage draft"
+          />
+        </Table>
+      </Section>
+
+      <Section title="CollapsibleGroupRow">
+        <Table>
+          <CollapsibleGroupRowDemo />
+        </Table>
+      </Section>
+
+      <Section title="GroupHeader">
+        <div className="flex flex-col gap-3">
+          <div className="overflow-hidden rounded-card border border-border-field">
+            <GroupHeader
+              left={
+                <span className="text-[13.5px] font-bold">Mon · Jul 14</span>
+              }
+              right={
+                <span className="font-mono text-[13px] text-body">10h 15m</span>
+              }
+            />
+          </div>
+          <div className="overflow-hidden rounded-card border border-border-field">
+            <GroupHeader
+              left={
+                <>
+                  <ProjectDot color="#56c7d6" size={11} />
+                  <span className="text-[14.5px] font-bold">Acme Redesign</span>
+                  <span className="text-[13px] text-muted">
+                    · Acme Co · $95/hr
+                  </span>
+                </>
+              }
+              right={
+                <>
+                  <Tag status="running">RUNNING</Tag>
+                  <span className="font-mono text-[13px] text-accent">
+                    6h 40m
+                  </span>
+                </>
+              }
+            />
+          </div>
+        </div>
+      </Section>
+
+      <Section title="KpiRow">
+        <KpiRow>
+          <StatCard
+            label="Unbilled"
+            value="18h 40m"
+            accent
+            caption="4 projects"
+          />
+          <StatCard label="This week" value="32h 15m" />
+          <StatCard label="Outstanding" value="$2,400" />
+          <StatCard label="Active clients" value="6" />
+        </KpiRow>
+      </Section>
+
+      <Section title="BarChart">
+        <div className="flex flex-col gap-4">
+          <ChartLegend />
+          <BarChart data={chartData} />
+        </div>
+      </Section>
+
+      <Section title="StatusTimeline">
+        <div className="max-w-xs">
+          <StatusTimeline
+            steps={[
+              { label: "Draft", timestamp: "Jul 10", state: "done" },
+              { label: "Sent", timestamp: "now", state: "current" },
+              { label: "Paid", state: "upcoming" },
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section title="SummaryTotals">
+        <div className="max-w-xs">
+          <SummaryTotals
+            rows={[
+              { label: "Total hours", value: "6h 45m" },
+              { label: "Rate applied", value: "$95/hr" },
+            ]}
+            total={{ label: "Total due", value: "$641.25" }}
+          />
+        </div>
+      </Section>
+
+      {/* Overlays & feedback */}
+
+      <Section title="Modal">
+        <ModalDemo />
+      </Section>
+
+      <Section title="ConfirmDialog">
+        <ConfirmDialogDemo />
+      </Section>
+
+      <Section title="AuthCard">
+        <div className="overflow-hidden rounded-card">
+          <AuthCard
+            className="min-h-125"
+            title="Welcome back"
+            subtitle="Sign in to your account"
+            footer="Don't have an account? Sign up"
+          >
+            <FieldGroup>
+              <FieldLabel>Email</FieldLabel>
+              <Field placeholder="you@company.com" />
+            </FieldGroup>
+            <FieldGroup>
+              <FieldLabel>Password</FieldLabel>
+              <Field type="password" />
+            </FieldGroup>
+            <Button variant="primary" fullWidth>
+              Sign in
+            </Button>
+          </AuthCard>
+        </div>
+      </Section>
+
+      <Section title="EmptyState">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <EmptyState
+            variant="no-data"
+            title="No time tracked"
+            body="Start a timer or add a manual entry to see it here."
+            actions={<Button variant="primary">+ New entry</Button>}
+          />
+          <EmptyState
+            variant="no-results"
+            title="No entries match your filters"
+            body="Try widening the date range or clearing filters."
+            actions={<Button variant="secondary">Clear filters</Button>}
+          />
+        </div>
+      </Section>
+
+      <Section title="ErrorState">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ErrorState
+            variant="error"
+            title="Something went wrong"
+            body="Give it another try — if it keeps happening, let us know."
+            actions={<Button variant="primary">Try again</Button>}
+          />
+          <ErrorState
+            variant="not-found"
+            title="Page not found"
+            body="The page you're looking for doesn't exist or has moved."
+            actions={<Button variant="primary">Back to dashboard</Button>}
+          />
+        </div>
+      </Section>
+
+      <Section
+        title="InlineFormError"
+        description="The standalone version — Field's own error prop covers most cases."
+      >
+        <div className="max-w-md">
+          <FieldGroup>
+            <FieldLabel required>Email</FieldLabel>
+            <Field defaultValue="jane@" />
+            <InlineFormError>Incorrect email or password.</InlineFormError>
+          </FieldGroup>
         </div>
       </Section>
     </div>
