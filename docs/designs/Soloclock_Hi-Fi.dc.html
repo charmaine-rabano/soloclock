@@ -231,6 +231,40 @@
           </sc-if>
         </div>
       </div>
+
+      <!-- TS-P collapsed : filter rail closed -->
+      <div id="1c" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">1c</span><span style="font-size: 15px; font-weight: 600;">Timesheet · filter rail closed</span><span style="font-size: 12.5px; color: #7b7264;">— « collapses the rail to a ~30px strip; » re-expands it</span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;">
+            <div style="display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-0.01em;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div>
+            <div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navon">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navlink">Invoices</span></div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span class="btn">+ New entry</span><div class="avatar">J</div></div>
+          </div>
+          <div style="display: flex; align-items: stretch; min-height: 560px;">
+            <div style="width: 30px; border-right: 1px solid #2c261d; padding: 14px 0; display: flex; flex-direction: column; align-items: center; gap: 18px; background: #191510;" title="Filters — collapsed">
+              <span style="font-size: 12px; color: #9a9082; border: 1px solid #332c22; border-radius: 7px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex: none;">»</span>
+              <span class="mono" style="font-size: 10.5px; letter-spacing: 0.16em; color: #7b7264; writing-mode: vertical-rl; text-orientation: mixed;">FILTERS</span>
+              
+            </div>
+            <div style="flex: 1; padding: 24px 26px; display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; align-items: flex-end; justify-content: space-between;"><div style="display: flex; flex-direction: column; gap: 5px;"><div style="font-size: 22px; font-weight: 700;">Timesheet</div><div style="font-size: 13px; color: #7b7264;">This week · Jul 14 – Jul 20, 2026</div></div><div style="display: flex; gap: 10px;"><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Tracked</span><span class="mono" style="font-size: 15px; font-weight: 600;">40h 15m</span></div><div class="stat" style="padding: 9px 14px; gap: 2px;"><span style="font-size: 11px; color: #7b7264;">Unbilled</span><span class="mono" style="font-size: 15px; font-weight: 600; color: var(--accent,#e8975a);">32h 45m</span></div></div></div>
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #221d15; border-bottom: 1px solid #2c261d;"><span style="width:11px;height:11px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14.5px;font-weight:700;">Acme Redesign</span><span style="font-size:12.5px;color:#9a9082;">· Acme Co · $95/hr</span><div style="margin-left:auto;display:flex;gap:18px;align-items:center;"><span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);display:flex;gap:5px;align-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;"></span>RUNNING</span><span class="mono" style="font-size:13px;color:#b0a796;">16h 00m total</span><span class="mono" style="font-size:13px;font-weight:600;color:var(--accent,#e8975a);">14h 15m unbilled</span></div></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-left:3px solid var(--accent,#e8975a);background:rgba(232,151,90,0.09);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span class="mono" style="font-size:12.5px;color:#9a9082;">1:00 PM – now</span><span class="mono" style="font-size:13.5px;font-weight:600;color:var(--accent,#e8975a);">{{ running }}</span><span style="font-size:12.5px;color:#b0a796;">Hero section polish</span><span class="tag" style="color:var(--accent,#e8975a);border:1px solid rgba(232,151,90,0.4);">RUNNING</span></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 11</span><span class="mono" style="font-size:12.5px;color:#9a9082;">10:00 AM – 3:00 PM</span><span class="mono" style="font-size:13.5px;">5h 00m</span><span style="font-size:12.5px;color:#b0a796;">Design review + revisions</span><span></span></div>
+              </div>
+              <div class="card" style="overflow: hidden;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #221d15; border-bottom: 1px solid #2c261d;"><span style="width:11px;height:11px;border-radius:50%;background:#a78bfa;flex:none;"></span><span style="font-size:14.5px;font-weight:700;">Website Copy</span><span style="font-size:12.5px;color:#9a9082;">· Bright Media · $80/hr</span><div style="margin-left:auto;display:flex;gap:18px;align-items:center;"><span class="mono" style="font-size:13px;color:#b0a796;">9h 30m total</span><span class="mono" style="font-size:13px;font-weight:600;color:var(--accent,#e8975a);">9h 30m unbilled</span></div></div>
+                <div class="row-h" style="display:grid;grid-template-columns:88px 160px 84px 1fr auto;gap:16px;align-items:center;padding:var(--rowpad,12px 16px);"><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 13</span><span class="mono" style="font-size:12.5px;color:#9a9082;">10:00 AM – 4:00 PM</span><span class="mono" style="font-size:13.5px;">6h 00m</span><span style="font-size:12.5px;color:#b0a796;">Landing page draft</span><span></span></div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;color:#f6f1e8;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div>
+          </sc-if>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -395,6 +429,35 @@
         </div>
       </div>
 
+      <div id="IF" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">IF</span><span style="font-size: 15px; font-weight: 600;">Invoices · client filter open</span><span style="font-size: 12.5px; color: #7b7264;">— dropdown reached by clicking "All clients" in <a href="#IL">IL</a></span></div>
+        <div class="frame">
+          <div style="height:60px;border-bottom:1px solid #2c261d;display:flex;align-items:center;padding:0 22px;gap:30px;background:#17130d;"><div style="display:flex;align-items:center;gap:9px;font-weight:700;"><span style="width:12px;height:12px;border-radius:50%;background:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.18);"></span>soloclock</div><div style="display:flex;gap:4px;"><span class="navlink">Dashboard</span><span class="navlink">Timesheet</span><span class="navlink">Clients</span><span class="navlink">Projects</span><span class="navon">Invoices</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:12px;"><div class="avatar">J</div></div></div>
+          <div style="padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; min-height: 500px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;"><div style="font-size: 22px; font-weight: 700;">Invoices</div><span class="btn">+ New invoice</span></div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;"><div style="display:flex;gap:8px;"><span class="tag" style="background:#322a1f;color:#f6f1e8;padding:7px 12px;font-size:12px;">All</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Draft</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Sent</span><span class="tag" style="border:1px solid #332c22;color:#9a9082;padding:7px 12px;font-size:12px;">Paid</span></div><div style="margin-left:auto;display:flex;align-items:center;gap:10px;"><div style="position:relative;">
+              <div class="field" style="width:170px;border-radius:9px;padding:8px 12px;font-size:13px;border-color:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.14);"><span>All clients</span><span style="color:var(--accent,#e8975a);">▴</span></div>
+              <div style="position:absolute;top:calc(100% + 6px);left:0;width:220px;background:#221d15;border:1px solid #3b3325;border-radius:11px;padding:6px;display:flex;flex-direction:column;gap:1px;box-shadow:0 24px 44px -14px rgba(0,0,0,0.75);z-index:5;">
+                <div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;background:rgba(232,151,90,0.1);"><span style="flex:1;font-size:13px;font-weight:500;">All clients</span><span style="color:var(--accent,#e8975a);font-size:13px;">✓</span></div>
+                <div style="border-top:1px solid #2c261d;margin:3px 0;"></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;"><span style="font-size:13px;">Acme Co</span></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;"><span style="font-size:13px;">Bright Media</span></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;"><span style="font-size:13px;">Northwind</span></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;"><span style="font-size:13px;">Lumen Labs</span></div>
+              </div>
+            </div><div class="field" style="width:170px;border-radius:9px;padding:8px 12px;font-size:13px;"><span style="color:#9a9082;">All projects</span><span style="color:#7b7264;">▾</span></div></div></div>
+            <div class="card" style="overflow: hidden;">
+              <div style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;padding:11px 18px;background:#221d15;border-bottom:1px solid #2c261d;font-size:11.5px;letter-spacing:0.04em;color:#7b7264;text-transform:uppercase;"><span>Invoice</span><span>Date</span><span>Project</span><span>Client</span><span style="text-align:right;">Total</span><span style="text-align:center;">Status</span><span></span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);"><span class="mono" style="font-size:12.5px;">INV-1042</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 14</span><span style="font-size:13.5px;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co</span><span class="mono" style="font-size:13.5px;text-align:right;">$641.25</span><span style="text-align:center;"><span class="tag" style="border:1px dashed #6a6152;color:#b0a796;">DRAFT</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;">INV-1041</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jul 08</span><span style="font-size:13.5px;">Website Copy</span><span style="font-size:13px;color:#9a9082;">Bright Media</span><span class="mono" style="font-size:13.5px;text-align:right;">$1,280.00</span><span style="text-align:center;"><span class="tag" style="border:1px solid #6f95c9;color:#a9c6ec;">SENT ↗</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;">INV-1039</span><span class="mono" style="font-size:12.5px;color:#9a9082;">Jun 30</span><span style="font-size:13.5px;">Mobile App</span><span style="font-size:13px;color:#9a9082;">Northwind</span><span class="mono" style="font-size:13.5px;text-align:right;">$3,300.00</span><span style="text-align:center;"><span class="tag" style="background:rgba(122,190,120,0.16);border:1px solid #5f9a5c;color:#93cf90;">PAID ✓</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+              <div class="row-h" style="display:grid;grid-template-columns:120px 100px 1fr 150px 120px 130px 40px;gap:14px;align-items:center;padding:var(--rowpad,14px 18px);border-top:1px solid #2c261d;"><span class="mono" style="font-size:12.5px;color:#7b7264;text-decoration:line-through;">INV-1036</span><span class="mono" style="font-size:12.5px;color:#7b7264;">Jun 12</span><span style="font-size:13.5px;color:#7b7264;">Brand System</span><span style="font-size:13px;color:#7b7264;">Lumen Labs</span><span class="mono" style="font-size:13.5px;text-align:right;color:#7b7264;">$960.00</span><span style="text-align:center;"><span class="tag" style="border:1px solid #4a4030;color:#7b7264;">VOID ⊘</span></span><span style="text-align:right;color:#7b7264;">›</span></div>
+            </div>
+          </div>
+          <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:14px;padding:12px 22px;background:linear-gradient(90deg,rgba(232,151,90,0.16),rgba(232,151,90,0.05));border-top:1px solid #3b3325;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#e8975a);animation:pulse 1.6s ease-in-out infinite;flex:none;"></span><span class="mono" style="font-size:11px;letter-spacing:0.16em;color:var(--accent,#e8975a);">RUNNING</span><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><span style="font-size:14px;font-weight:600;">Acme Redesign</span><span style="font-size:13px;color:#9a9082;">Acme Co · Hero section polish</span><span class="mono" style="margin-left:auto;font-size:19px;font-weight:600;">{{ running }}</span><span class="btn-o" style="padding:6px 14px;"><span style="width:8px;height:8px;background:var(--accent,#e8975a);border-radius:2px;"></span>Stop</span></div></sc-if>
+        </div>
+      </div>
+
       <div id="ID" style="display: flex; flex-direction: column; gap: 12px;">
         <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">ID</span><span style="font-size: 15px; font-weight: 600;">Invoice · detail</span></div>
         <div class="frame" style="width: 1080px;">
@@ -473,6 +536,35 @@
           </div>
         </div>
       </div>
+
+      <div id="PS" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: baseline; gap: 10px;"><span class="badge">PS</span><span style="font-size: 15px; font-weight: 600;">Manual time entry · project select open</span><span style="font-size: 12.5px; color: #7b7264;">— dropdown reached by clicking the Project field in <a href="#ME">ME</a></span></div>
+        <div style="width: 620px; height: 480px; border: 1px solid #332c22; border-radius: 16px; background: #14100b; position: relative; overflow: hidden;">
+          <div style="position:absolute;inset:0;background:rgba(10,8,5,0.6);backdrop-filter:blur(2px);"></div>
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 460px; background: #1c1811; border: 1px solid #3b3325; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.9);">
+            <div style="font-size: 18px; font-weight: 700;">Add time entry</div>
+            <div style="display: flex; flex-direction: column; gap: 7px; position: relative;">
+              <span class="flabel">Project</span>
+              <div class="field" style="border-radius:10px;gap:10px;justify-content:flex-start;border-color:var(--accent,#e8975a);box-shadow:0 0 0 3px rgba(232,151,90,0.14);"><span style="width:10px;height:10px;border-radius:50%;background:#56c7d6;flex:none;"></span>Acme Redesign<span style="margin-left:auto;color:var(--accent,#e8975a);">▴</span></div>
+              <div style="position:absolute;top:calc(100% + 6px);left:0;right:0;background:#221d15;border:1px solid #3b3325;border-radius:11px;padding:6px;display:flex;flex-direction:column;gap:1px;box-shadow:0 24px 44px -14px rgba(0,0,0,0.75);z-index:5;">
+                <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;background:rgba(232,151,90,0.1);"><span style="width:9px;height:9px;border-radius:50%;background:#56c7d6;flex:none;"></span><div style="display:flex;flex-direction:column;gap:1px;flex:1;"><span style="font-size:13.5px;font-weight:500;">Acme Redesign</span><span style="font-size:11px;color:#7b7264;">Acme Co</span></div><span style="color:var(--accent,#e8975a);font-size:13px;">✓</span></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#e2b23c;flex:none;"></span><div style="display:flex;flex-direction:column;gap:1px;flex:1;"><span style="font-size:13.5px;">Q3 Retainer</span><span style="font-size:11px;color:#7b7264;">Acme Co</span></div></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#a78bfa;flex:none;"></span><div style="display:flex;flex-direction:column;gap:1px;flex:1;"><span style="font-size:13.5px;">Website Copy</span><span style="font-size:11px;color:#7b7264;">Bright Media</span></div></div>
+                <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#9aa6b2;flex:none;"></span><div style="display:flex;flex-direction:column;gap:1px;flex:1;"><span style="font-size:13.5px;">Internal Ops</span><span style="font-size:11px;color:#7b7264;">Internal</span></div></div>
+                
+              </div>
+            </div>
+            <span class="flabel">Description</span><div class="field" style="border-radius:10px;"><span style="color:#9a9082;">QA + fixes</span></div><div style="display: flex; gap: 12px;"><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Date</span><div class="field" style="border-radius: 10px; width: 190px; height: 41px"><span class="mono">Jul 14, 2026</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">Start</span><div class="field" style="border-radius:10px;"><span class="mono">2:00 PM</span></div></div><div style="flex:1;display:flex;flex-direction:column;gap:7px;"><span class="flabel">End</span><div class="field" style="border-radius:10px;"><span class="mono">4:30 PM</span></div></div></div>
+            <div style="display:flex;justify-content:flex-end;font-size:13px;color:#9a9082;margin-top:-4px;">Duration&nbsp; &nbsp;<span class="mono" style="color: rgb(246, 241, 232); font-weight: 600;">2h 30m</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#191510;border:1px solid #2c261d;border-radius:10px;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:38px;height:22px;border-radius:11px;background:var(--accent,#e8975a);display:flex;align-items:center;padding:2px;"><div style="width:18px;height:18px;border-radius:50%;background:#17130e;margin-left:auto;"></div></div><span style="font-size:13px;">Billable</span></div></div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;"><span class="btn-o">Cancel</span><span class="btn">Save entry</span></div>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
 
       <!-- EE : edit an existing entry — opened via the ✎ Edit affordance on hover in 1a/1b -->
       <div id="EE" style="display: flex; flex-direction: column; gap: 12px;">
