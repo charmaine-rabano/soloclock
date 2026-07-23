@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Icon } from "@/components/icons";
-import { Avatar, Button, Logo } from "@/components/ui";
+import { Button, Logo } from "@/components/ui";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/lib/routes";
+
+import { UserMenu } from "./user-menu";
 
 const links = [
   { href: ROUTES.dashboard, label: "Dashboard" },
@@ -39,7 +41,12 @@ function NavLink({ href, active, children }: NavLinkProps) {
   );
 }
 
-export function TopNav() {
+interface TopNavProps {
+  userEmail: string;
+  logoutAction: () => void;
+}
+
+export function TopNav({ userEmail, logoutAction }: TopNavProps) {
   const pathname = usePathname();
 
   return (
@@ -65,9 +72,7 @@ export function TopNav() {
           <Icon name="plus" size={14} />
           New entry
         </Button>
-        <Link href={ROUTES.account}>
-          <Avatar initials="J" />
-        </Link>
+        <UserMenu userEmail={userEmail} logoutAction={logoutAction} />
       </div>
     </header>
   );

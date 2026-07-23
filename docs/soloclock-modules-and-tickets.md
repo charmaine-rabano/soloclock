@@ -104,9 +104,9 @@ Context: auth is built outside a BaaS on purpose, to show session handling that 
 
 Acceptance Criteria:
 
-- [ ] Signup creates a user with a hashed password (bcrypt or argon2, never plaintext)
+- [ ] Signup creates a user with a hashed password (bcrypt, never plaintext)
 - [ ] Signup rejects duplicate emails with a visible inline error
-- [ ] Login with valid credentials creates a session; invalid credentials show an error and do not
+- [ ] Login with valid credentials creates a session; invalid credentials show an error
 - [ ] Session persists across a full page refresh
 - [ ] Logout clears the session and redirects to the login page
 

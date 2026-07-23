@@ -9,6 +9,8 @@ import { Avatar, Logo } from "@/components/ui";
 import { cn } from "@/lib/cn";
 import { ROUTES } from "@/lib/routes";
 
+import { UserMenu } from "./user-menu";
+
 const links = [
   { href: ROUTES.dashboard, label: "Dashboard" },
   { href: ROUTES.timesheet, label: "Timesheet" },
@@ -18,7 +20,12 @@ const links = [
   { href: ROUTES.reports, label: "Reports" },
 ];
 
-export function MobileShell() {
+interface MobileShellProps {
+  userEmail: string;
+  logoutAction: () => void;
+}
+
+export function MobileShell({ userEmail, logoutAction }: MobileShellProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -34,9 +41,13 @@ export function MobileShell() {
           <Icon name="menu" size={20} />
         </button>
         <Logo size="sm" />
-        <Link href={ROUTES.account} className="ml-auto">
-          <Avatar initials="J" size={28} />
-        </Link>
+        <div className="ml-auto">
+          <UserMenu
+            userEmail={userEmail}
+            logoutAction={logoutAction}
+            avatarSize={28}
+          />
+        </div>
       </header>
 
       {open ? (
@@ -78,17 +89,18 @@ export function MobileShell() {
             })}
 
             <div className="mt-auto flex items-center gap-2.5 border-t border-border pt-4">
-              <Avatar initials="J" />
+              <Avatar initials={userEmail[0]?.toUpperCase() ?? "?"} />
               <span className="min-w-0 flex-1 truncate text-[13px] text-subtle">
-                jane@acme.co
+                {userEmail}
               </span>
-              <Link
-                href={ROUTES.account}
-                onClick={() => setOpen(false)}
-                className="text-[13px] text-muted"
-              >
-                Log out
-              </Link>
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  className="cursor-pointer text-[13px] text-muted"
+                >
+                  Log out
+                </button>
+              </form>
             </div>
           </div>
         </div>

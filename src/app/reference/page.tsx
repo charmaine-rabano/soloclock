@@ -2,6 +2,7 @@ import { Icon, iconNames } from "@/components/icons";
 import { MobileShell } from "@/components/layout/mobile-shell";
 import { RunningTimerBar } from "@/components/layout/running-timer-bar";
 import { TopNav } from "@/components/layout/top-nav";
+import { logoutAction } from "@/lib/auth/actions";
 import {
   AuthCard,
   Avatar,
@@ -378,7 +379,7 @@ export default function ReferencePage() {
         description="The 60px authenticated header — wired into the (app) route group's layout."
       >
         <div className="overflow-hidden rounded-card border border-border-field">
-          <TopNav />
+          <TopNav userEmail="jane@acme.co" logoutAction={logoutAction} />
         </div>
       </Section>
 
@@ -387,7 +388,7 @@ export default function ReferencePage() {
         description="Click the hamburger to preview the drawer; the header swaps in below the md breakpoint."
       >
         <div className="max-w-sm overflow-hidden rounded-card border border-border-field">
-          <MobileShell />
+          <MobileShell userEmail="jane@acme.co" logoutAction={logoutAction} />
         </div>
       </Section>
 
