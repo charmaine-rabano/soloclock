@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { Spinner } from "@/components/ui/core/spinner";
 
 type ButtonVariant = "primary" | "secondary" | "destructive";
 
@@ -6,6 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   compact?: boolean;
   fullWidth?: boolean;
+  loading?: boolean;
 }
 
 const variantClass: Record<ButtonVariant, string> = {
@@ -21,8 +23,11 @@ export function Button({
   variant = "primary",
   compact = false,
   fullWidth = false,
+  loading = false,
   className,
   type = "button",
+  disabled,
+  children,
   ...props
 }: ButtonProps) {
   const padding = fullWidth
@@ -34,8 +39,10 @@ export function Button({
   return (
     <button
       type={type}
+      disabled={disabled ?? loading}
+      aria-busy={loading || undefined}
       className={cn(
-        "inline-flex cursor-pointer items-center rounded-btn transition-colors",
+        "inline-flex cursor-pointer items-center justify-center rounded-btn transition-colors",
         "disabled:cursor-not-allowed disabled:opacity-50",
         variantClass[variant],
         padding,
@@ -43,6 +50,9 @@ export function Button({
         className,
       )}
       {...props}
-    />
+    >
+      {loading && <Spinner />}
+      {children}
+    </button>
   );
 }

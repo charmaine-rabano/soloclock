@@ -9,7 +9,5 @@ export function FieldGroup({ className, ...props }: FieldGroupProps) {
 type FormRowProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function FormRow({ className, ...props }: FormRowProps) {
-  return (
-    <div className={cn("flex gap-3 *:flex-1", className)} {...props} />
-  );
+  return <div className={cn("flex gap-3 *:flex-1", className)} {...props} />;
 }

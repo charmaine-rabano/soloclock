@@ -25,6 +25,10 @@
   --color-danger-bg: rgba(122, 59, 50, 0.18);
   --color-danger-bg-hover: rgba(122, 59, 50, 0.3);
   --color-danger-text: #c77b6a;
+  --color-danger-soft-border: rgba(199, 123, 106, 0.45);
+
+  --color-warning: #e2b23c;
+  --color-warning-soft-border: rgba(226, 178, 60, 0.4);
 
   --color-accent-border: rgba(232, 151, 90, 0.4);
   --color-accent-ring: rgba(232, 151, 90, 0.18);
@@ -79,6 +83,15 @@
   50% {
     opacity: 0.3;
     transform: scale(0.55);
+  }
+}
+
+@keyframes toast-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
   }
 }
 

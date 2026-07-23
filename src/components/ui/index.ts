@@ -45,3 +45,6 @@ export { ConfirmDialog } from "./overlay/confirm-dialog";
 export { AuthCard } from "./overlay/auth-card";
 export { EmptyState } from "./overlay/empty-state";
 export { ErrorState } from "./overlay/error-state";
+export { Toast } from "./overlay/toast";
+export { ToastProvider, useToast } from "./overlay/toast-provider";
+export type { ToastVariant } from "./overlay/toast-card";
