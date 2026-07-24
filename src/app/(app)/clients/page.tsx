@@ -11,7 +11,7 @@ export default async function ClientsPage() {
   const clients = await listClients(user.id);
 
   return (
-    <PageContainer title="Clients">
+    <PageContainer>
       <ClientsView clients={clients} />
     </PageContainer>
   );

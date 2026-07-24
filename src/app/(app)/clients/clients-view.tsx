@@ -24,12 +24,13 @@ export function ClientsView({ clients }: { clients: ClientListItem[] }) {
 
   return (
     <div className="flex flex-col gap-4.5">
-      <div className="flex justify-end">
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">Clients</h1>
         <Button onClick={() => setCreateOpen(true)}>
           <Icon name="plus" size={14} />
           New client
         </Button>
-      </div>
+      </header>
 
       {clients.length === 0 ? (
         <EmptyState
