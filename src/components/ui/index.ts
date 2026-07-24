@@ -5,6 +5,7 @@ export { Avatar } from "./core/avatar";
 export { ProjectDot } from "./core/project-dot";
 export { StatCard } from "./core/stat-card";
 export { Logo } from "./core/logo";
+export { Spinner } from "./core/spinner";
 export { Tag, type TagStatus } from "./core/tag";
 
 // Form controls
