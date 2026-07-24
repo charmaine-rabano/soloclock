@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 import {
   Button,
@@ -37,6 +37,20 @@ export function ClientFormModal({
   );
   const { toast } = useToast();
 
+  const [name, setName] = useState(client?.name ?? "");
+  const [email, setEmail] = useState(client?.email ?? "");
+
+  // Re-seed only on the open transition — not on every keystroke, and not
+  // on every `client` prop change while the modal is already open — so a
+  // failed submit (which doesn't toggle `open`) leaves typed input intact.
+  useEffect(() => {
+    if (open) {
+      setName(client?.name ?? "");
+      setEmail(client?.email ?? "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   // The list/detail page refreshes via `revalidatePath` inside the action —
   // closing here just dismisses the modal (SC-CLI-02: no manual refresh).
   // `state` is a fresh object on every submit, so this fires exactly once per
@@ -65,7 +79,7 @@ export function ClientFormModal({
       open={open}
       onClose={onClose}
       title={mode === "create" ? "New client" : "Edit client"}
-      size="sm"
+      size="md"
     >
       <form action={formAction} className="flex flex-col gap-3.75">
         {mode === "edit" && client ? (
@@ -78,7 +92,8 @@ export function ClientFormModal({
           <Field
             id="name"
             name="name"
-            defaultValue={client?.name}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             error={state.fieldErrors?.name}
           />
         </FieldGroup>
@@ -90,7 +105,8 @@ export function ClientFormModal({
             id="email"
             name="email"
             type="email"
-            defaultValue={client?.email ?? ""}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             error={state.fieldErrors?.email}
           />
         </FieldGroup>
