@@ -21,3 +21,14 @@ export function formatHours(ms: number): string {
 export function durationMs(startedAt: Date, endedAt: Date): number {
   return endedAt.getTime() - startedAt.getTime();
 }
+
+// e.g. `01:12:44` — zero-padded HH:MM:SS, for a *live* running duration
+// (SC-TMR-02). Completed entries use `formatHours` instead.
+export function formatClock(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}

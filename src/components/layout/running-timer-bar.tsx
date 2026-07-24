@@ -9,6 +9,11 @@ interface RunningTimerBarProps {
   elapsed: string;
   onStop?: () => void;
   className?: string;
+  projectSlot?: React.ReactNode;
+  descriptionSlot?: React.ReactNode;
+  /** Rendered just before the elapsed time (small gap, no push-apart) —
+   *  e.g. a billable toggle. */
+  billableSlot?: React.ReactNode;
 }
 
 export function RunningTimerBar({
@@ -19,6 +24,9 @@ export function RunningTimerBar({
   elapsed,
   onStop,
   className,
+  projectSlot,
+  descriptionSlot,
+  billableSlot,
 }: RunningTimerBarProps) {
   return (
     <div
@@ -32,14 +40,26 @@ export function RunningTimerBar({
         RUNNING
       </span>
       <ProjectDot color={projectColor} size={9} />
-      <span className="truncate text-sm font-semibold md:text-[14px]">
-        {projectName}
-      </span>
-      <span className="hidden truncate text-[13px] text-muted md:inline">
+      {projectSlot ?? (
+        <span className="truncate text-sm font-semibold md:text-[14px]">
+          {projectName}
+        </span>
+      )}
+      <span className="hidden items-center truncate text-[13px] text-muted md:flex">
         {clientLabel}
-        {descriptionLabel ? ` · ${descriptionLabel}` : ""}
+        {descriptionSlot ? (
+          <>
+            <span className="mx-1 shrink-0">·</span>
+            {descriptionSlot}
+          </>
+        ) : descriptionLabel ? (
+          ` · ${descriptionLabel}`
+        ) : null}
       </span>
-      <span className="ml-auto shrink-0 font-mono text-[16px] font-semibold text-foreground md:text-[19px]">
+      {billableSlot ? (
+        <span className="ml-auto hidden shrink-0 md:flex">{billableSlot}</span>
+      ) : null}
+      <span className="ml-6 shrink-0 font-mono text-[16px] font-semibold text-foreground tabular-nums md:text-[19px]">
         {elapsed}
       </span>
       <button

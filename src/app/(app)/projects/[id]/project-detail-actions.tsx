@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 
 import { Icon } from "@/components/icons";
 import { Button, Modal, useToast } from "@/components/ui";
@@ -10,6 +10,7 @@ import {
   type ProjectActionState,
 } from "@/lib/projects/actions";
 import { ROUTES } from "@/lib/routes";
+import { startTimerAction, stopTimerAction } from "@/lib/timer/actions";
 
 import { ProjectFormModal } from "../project-form-modal";
 
@@ -26,11 +27,14 @@ interface ProjectDetailActionsProps {
     hourlyRate: number;
   };
   clients: { id: string; name: string }[];
+  /** Whether the currently running timer (if any) belongs to this project. */
+  isRunning: boolean;
 }
 
 export function ProjectDetailActions({
   project,
   clients,
+  isRunning,
 }: ProjectDetailActionsProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -38,6 +42,7 @@ export function ProjectDetailActions({
     deleteProjectAction,
     initialDeleteState,
   );
+  const [isTimerPending, startTimerTransition] = useTransition();
   const { toast } = useToast();
 
   // Success redirects server-side (the component unmounts), so there's no
@@ -55,6 +60,31 @@ export function ProjectDetailActions({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
+  function handleStartStop() {
+    startTimerTransition(async () => {
+      if (isRunning) {
+        await stopTimerAction();
+        return;
+      }
+
+      const result = await startTimerAction(project.id);
+      if (!result.ok) {
+        toast({
+          variant: "error",
+          title: "Couldn't start timer",
+          message: result.error,
+        });
+      } else if (result.stoppedProjectName) {
+        // SC-TMR-03: starting a second timer auto-stops the first — confirm
+        // it here, naming the project that got stopped.
+        toast({
+          title: "Timer switched",
+          message: `Stopped the timer on ${result.stoppedProjectName} and started ${project.name}.`,
+        });
+      }
+    });
+  }
+
   return (
     <>
       <Button variant="secondary" onClick={() => setEditOpen(true)}>
@@ -66,13 +96,25 @@ export function ProjectDetailActions({
       <Link href={ROUTES.invoices}>
         <Button variant="secondary">View invoices</Button>
       </Link>
-      {/* Real start/stop lands with the M2 timesheet module — stubbed here
-          rather than dropped from the header, matching the mockup's primary
-          action slot. */}
-      <Button variant="primary" disabled>
-        <Icon name="play" size={14} />
-        Start timer
-      </Button>
+      {isRunning ? (
+        <Button
+          variant="secondary"
+          onClick={handleStartStop}
+          loading={isTimerPending}
+        >
+          <span className="size-2 rounded-xs bg-accent" />
+          Stop timer
+        </Button>
+      ) : (
+        <Button
+          variant="primary"
+          onClick={handleStartStop}
+          loading={isTimerPending}
+        >
+          <Icon name="play" size={14} />
+          Start timer
+        </Button>
+      )}
 
       <ProjectFormModal
         mode="edit"

@@ -16,8 +16,10 @@ import { listClientOptions } from "@/lib/clients/queries";
 import { formatHours, formatMoney } from "@/lib/format";
 import { getProjectDetail } from "@/lib/projects/queries";
 import { clientPath, ROUTES } from "@/lib/routes";
+import { getRunningTimer } from "@/lib/timer/queries";
 
 import { ProjectDetailActions } from "./project-detail-actions";
+import { RunningEntryRow } from "./running-entry-row";
 
 const ENTRY_COLUMNS = "90px 150px 84px 1fr auto";
 
@@ -37,13 +39,16 @@ export default async function ProjectDetailPage({
 }) {
   const { id } = await params;
   const user = await requireUser();
-  const [project, clients] = await Promise.all([
+  const [project, clients, runningTimer] = await Promise.all([
     getProjectDetail(user.id, id),
     listClientOptions(user.id),
+    getRunningTimer(user.id),
   ]);
 
   // Not found or not owned by this user both 404 (matches SC-AUTH-02)
   if (!project) notFound();
+
+  const isRunning = runningTimer?.projectId === project.id;
 
   return (
     <div className="mx-auto max-w-270 px-8 pt-8 pb-16">
@@ -78,6 +83,7 @@ export default async function ProjectDetailPage({
                 hourlyRate: project.hourlyRate.toNumber(),
               }}
               clients={clients}
+              isRunning={isRunning}
             />
           }
         />
@@ -111,10 +117,23 @@ export default async function ProjectDetailPage({
           ) : (
             <Table>
               {project.recentEntries.map((entry, index) => {
+                // The running entry (there's ever at most one, SC-TMR-03)
+                // gets a client component so its duration ticks live and its
+                // description stays editable while it runs.
+                if (entry.running) {
+                  return (
+                    <RunningEntryRow
+                      key={entry.id}
+                      entryId={entry.id}
+                      startedAtMs={entry.startedAt.getTime()}
+                      description={entry.description}
+                      first={index === 0}
+                    />
+                  );
+                }
+
                 const end = entry.endedAt ?? new Date();
-                const timeRange = entry.running
-                  ? `${timeFormatter.format(entry.startedAt)} – now`
-                  : `${timeFormatter.format(entry.startedAt)} – ${timeFormatter.format(end)}`;
+                const timeRange = `${timeFormatter.format(entry.startedAt)} – ${timeFormatter.format(end)}`;
                 const durationMs = end.getTime() - entry.startedAt.getTime();
 
                 return (
@@ -122,11 +141,6 @@ export default async function ProjectDetailPage({
                     key={entry.id}
                     columns={ENTRY_COLUMNS}
                     first={index === 0}
-                    className={
-                      entry.running
-                        ? "border-l-[3px] border-l-accent bg-accent/9"
-                        : undefined
-                    }
                   >
                     <span className="font-mono text-[12.5px] text-muted">
                       {dateFormatter.format(entry.startedAt)}
@@ -134,21 +148,13 @@ export default async function ProjectDetailPage({
                     <span className="font-mono text-[12.5px] text-muted">
                       {timeRange}
                     </span>
-                    <span
-                      className={
-                        entry.running
-                          ? "font-mono text-[13.5px] font-semibold text-accent"
-                          : "font-mono text-[13.5px]"
-                      }
-                    >
+                    <span className="font-mono text-[13.5px]">
                       {formatHours(durationMs)}
                     </span>
                     <span className="truncate text-[12.5px] text-body">
                       {entry.description ?? "—"}
                     </span>
-                    {entry.running ? (
-                      <Tag status="running">RUNNING</Tag>
-                    ) : !entry.billable ? (
+                    {!entry.billable ? (
                       <Tag status="non-billable">NON-BILLABLE</Tag>
                     ) : (
                       <span />

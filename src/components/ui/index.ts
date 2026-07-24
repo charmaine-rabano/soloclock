@@ -19,6 +19,7 @@ export { SegmentedControl } from "./form/segmented-control";
 export { ColorPicker } from "./form/color-picker";
 export { FieldGroup, FormRow } from "./form/form-layout";
 export { InlineFormError } from "./form/inline-form-error";
+export { InlineTextField } from "./form/inline-text-field";
 
 // Navigation & shell
 export { Breadcrumb } from "./nav/breadcrumb";
