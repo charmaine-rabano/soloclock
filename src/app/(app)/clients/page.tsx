@@ -1,16 +1,18 @@
 import { PageContainer } from "@/components/layout/page-container";
+import { requireUser } from "@/lib/auth/session";
+import { listClients } from "@/lib/clients/queries";
+
+import { ClientsView } from "./clients-view";
 
 export const metadata = { title: "Clients" };
 
-export default function ClientsPage() {
+export default async function ClientsPage() {
+  const user = await requireUser();
+  const clients = await listClients(user.id);
+
   return (
-    <PageContainer
-      title="Clients"
-      description="The people and companies you do work for."
-    >
-      <div className="rounded-ui border border-dashed border-border p-8 text-muted">
-        Scaffolded shell. Feature work lands in M2 — Clients.
-      </div>
+    <PageContainer title="Clients">
+      <ClientsView clients={clients} />
     </PageContainer>
   );
 }

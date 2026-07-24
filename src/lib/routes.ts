@@ -15,3 +15,5 @@ export const ROUTES = {
 
 export type RouteKey = keyof typeof ROUTES;
 export type Route = (typeof ROUTES)[RouteKey];
+
+export const clientPath = (id: string) => `${ROUTES.clients}/${id}`;

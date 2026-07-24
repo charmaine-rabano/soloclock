@@ -10,7 +10,7 @@ export function PageContainer({
   return (
     <div className="mx-auto max-w-270 px-8 pt-8 pb-16">
       <header className="mb-6">
-        <h1 className="text-2xl tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         {description ? (
           <p className="mt-1.5 text-muted">{description}</p>
         ) : null}
