@@ -1,29 +1,41 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
 
 import { Icon } from "@/components/icons";
 import { Button, Modal, useToast } from "@/components/ui";
 import {
-  type ClientActionState,
-  deleteClientAction,
-} from "@/lib/clients/actions";
+  deleteProjectAction,
+  type ProjectActionState,
+} from "@/lib/projects/actions";
+import { ROUTES } from "@/lib/routes";
 
-import { ProjectFormModal } from "../../projects/project-form-modal";
-import { ClientFormModal } from "../client-form-modal";
+import { ProjectFormModal } from "../project-form-modal";
 
-const initialDeleteState: ClientActionState = {};
+const initialDeleteState: ProjectActionState = {};
 
-interface ClientDetailActionsProps {
-  client: { id: string; name: string; email: string | null };
+interface ProjectDetailActionsProps {
+  // Plain values only — Prisma.Decimal can't cross the server/client
+  // boundary, so the page converts hourlyRate with `.toNumber()` first.
+  project: {
+    id: string;
+    name: string;
+    color: string;
+    clientId: string;
+    hourlyRate: number;
+  };
+  clients: { id: string; name: string }[];
 }
 
-export function ClientDetailActions({ client }: ClientDetailActionsProps) {
+export function ProjectDetailActions({
+  project,
+  clients,
+}: ProjectDetailActionsProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [createProjectOpen, setCreateProjectOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(
-    deleteClientAction,
+    deleteProjectAction,
     initialDeleteState,
   );
   const { toast } = useToast();
@@ -31,17 +43,15 @@ export function ClientDetailActions({ client }: ClientDetailActionsProps) {
   // Success redirects server-side (the component unmounts), so there's no
   // client-side moment to toast a success message from — only the block/
   // not-found failure needs one. `state` is fresh per dispatch (see
-  // client-form-modal.tsx), so this fires once per attempt.
+  // project-form-modal.tsx), so this fires once per attempt.
   useEffect(() => {
     if (state.formError) {
       toast({
         variant: "error",
-        title: "Couldn't delete client",
+        title: "Couldn't delete project",
         message: state.formError,
       });
     }
-    // `state` alone gates this; `toast` is fresh as of the render that
-    // changed `state`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
@@ -53,36 +63,35 @@ export function ClientDetailActions({ client }: ClientDetailActionsProps) {
       <Button variant="destructive" onClick={() => setDeleteOpen(true)}>
         Delete
       </Button>
-      <Button variant="primary" onClick={() => setCreateProjectOpen(true)}>
-        <Icon name="plus" size={14} />
-        New project
+      <Link href={ROUTES.invoices}>
+        <Button variant="secondary">View invoices</Button>
+      </Link>
+      {/* Real start/stop lands with the M2 timesheet module — stubbed here
+          rather than dropped from the header, matching the mockup's primary
+          action slot. */}
+      <Button variant="primary" disabled>
+        <Icon name="play" size={14} />
+        Start timer
       </Button>
 
-      <ClientFormModal
+      <ProjectFormModal
         mode="edit"
-        client={client}
+        project={project}
+        clients={clients}
         open={editOpen}
         onClose={() => setEditOpen(false)}
-      />
-
-      <ProjectFormModal
-        mode="create"
-        clients={[{ id: client.id, name: client.name }]}
-        defaultClientId={client.id}
-        open={createProjectOpen}
-        onClose={() => setCreateProjectOpen(false)}
       />
 
       <Modal
         open={deleteOpen}
         onClose={() => setDeleteOpen(false)}
-        title="Delete client"
+        title="Delete project"
         size="sm"
       >
         <form action={formAction} className="flex flex-col gap-3.75">
-          <input type="hidden" name="id" value={client.id} />
+          <input type="hidden" name="id" value={project.id} />
           <p className="text-[13px] leading-relaxed text-body">
-            Delete {client.name}? This can&apos;t be undone.
+            Delete {project.name}? This can&apos;t be undone.
           </p>
           <div className="flex justify-end gap-2.5">
             <Button

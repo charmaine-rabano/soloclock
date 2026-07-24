@@ -15,7 +15,7 @@ interface ModalProps {
 
 const sizeClass: Record<"sm" | "md", string> = {
   sm: "w-80",
-  md: "w-115",
+  md: "w-120",
 };
 
 export function Modal({

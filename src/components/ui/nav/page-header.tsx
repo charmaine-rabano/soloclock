@@ -2,7 +2,9 @@ import { cn } from "@/lib/cn";
 
 interface PageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  subtitle?: string;
+  /** Usually a formatted string; accepts a node for cases like a linked
+   *  client name (e.g. the project detail header). */
+  subtitle?: React.ReactNode;
   actions?: React.ReactNode;
   /** User-chosen project hex — renders a left accent rail beside the title. */
   rail?: string;

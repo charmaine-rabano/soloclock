@@ -67,6 +67,21 @@ export async function listClients(userId: string): Promise<ClientListItem[]> {
   });
 }
 
+export interface ClientOption {
+  id: string;
+  name: string;
+}
+
+export async function listClientOptions(
+  userId: string,
+): Promise<ClientOption[]> {
+  return prisma.client.findMany({
+    where: { userId },
+    orderBy: { name: "asc" },
+    select: { id: true, name: true },
+  });
+}
+
 export interface ClientDetailProject {
   id: string;
   name: string;

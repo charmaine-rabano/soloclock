@@ -1,16 +1,22 @@
 import { PageContainer } from "@/components/layout/page-container";
+import { requireUser } from "@/lib/auth/session";
+import { listClientOptions } from "@/lib/clients/queries";
+import { listProjects } from "@/lib/projects/queries";
+
+import { ProjectsView } from "./projects-view";
 
 export const metadata = { title: "Projects" };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const user = await requireUser();
+  const [projects, clients] = await Promise.all([
+    listProjects(user.id),
+    listClientOptions(user.id),
+  ]);
+
   return (
-    <PageContainer
-      title="Projects"
-      description="Billable work under each client, with rates and colors."
-    >
-      <div className="rounded-ui border border-dashed border-border p-8 text-muted">
-        Scaffolded shell. Feature work lands in M3 — Projects.
-      </div>
+    <PageContainer>
+      <ProjectsView projects={projects} clients={clients} />
     </PageContainer>
   );
 }

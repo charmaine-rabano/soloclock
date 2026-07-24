@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Icon } from "@/components/icons";
@@ -14,7 +15,7 @@ import {
 import { requireUser } from "@/lib/auth/session";
 import { getClientDetail } from "@/lib/clients/queries";
 import { formatHours, formatMoney } from "@/lib/format";
-import { ROUTES } from "@/lib/routes";
+import { projectPath, ROUTES } from "@/lib/routes";
 
 import { ClientDetailActions } from "./client-detail-actions";
 
@@ -90,27 +91,27 @@ export default async function ClientDetailPage({
           ) : (
             <Table>
               {client.projects.map((project, index) => (
-                <TableRow
+                <Link
                   key={project.id}
-                  columns={PROJECT_COLUMNS}
-                  first={index === 0}
+                  href={projectPath(project.id)}
+                  className="block"
                 >
-                  <ProjectDot color={project.color} />
-                  <span className="font-medium">{project.name}</span>
-                  <span className="font-mono text-muted">
-                    {formatMoney(project.hourlyRate)}/hr
-                  </span>
-                  <span className="text-right font-mono text-body">
-                    {formatHours(project.trackedMs)}
-                  </span>
-                  {/* Chevron is a visual affordance only — project detail
-                      pages don't exist until M3, so the row isn't a link yet. */}
-                  <Icon
-                    name="chevron-right"
-                    size={14}
-                    className="ml-auto text-subtle"
-                  />
-                </TableRow>
+                  <TableRow columns={PROJECT_COLUMNS} first={index === 0}>
+                    <ProjectDot color={project.color} />
+                    <span className="font-medium">{project.name}</span>
+                    <span className="font-mono text-muted">
+                      {formatMoney(project.hourlyRate)}/hr
+                    </span>
+                    <span className="text-right font-mono text-body">
+                      {formatHours(project.trackedMs)}
+                    </span>
+                    <Icon
+                      name="chevron-right"
+                      size={14}
+                      className="ml-auto text-subtle"
+                    />
+                  </TableRow>
+                </Link>
               ))}
             </Table>
           )}
