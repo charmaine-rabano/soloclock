@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type FormEvent, useActionState, useState } from "react";
+import { z } from "zod";
 
 import {
   AuthCard,
@@ -39,7 +40,7 @@ export function SignupForm() {
 
     if (!parsed.success) {
       event.preventDefault();
-      const fieldErrors = parsed.error.flatten().fieldErrors;
+      const fieldErrors = z.flattenError(parsed.error).fieldErrors;
       setClientErrors({
         email: fieldErrors.email?.[0],
         password: fieldErrors.password?.[0],

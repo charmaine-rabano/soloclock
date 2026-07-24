@@ -1,6 +1,7 @@
 "use server";
 
 import { AuthError } from "next-auth";
+import { z } from "zod";
 
 import { signIn, signOut } from "@/auth";
 import { hashPassword } from "@/lib/auth/password";
@@ -32,7 +33,7 @@ export async function signupAction(
 ): Promise<AuthActionState> {
   const parsed = parseCredentials(signupSchema, formData);
   if (!parsed.success) {
-    const fieldErrors = parsed.error.flatten().fieldErrors;
+    const fieldErrors = z.flattenError(parsed.error).fieldErrors;
     return {
       fieldErrors: {
         email: fieldErrors.email?.[0],
@@ -68,7 +69,7 @@ export async function loginAction(
 ): Promise<AuthActionState> {
   const parsed = parseCredentials(loginSchema, formData);
   if (!parsed.success) {
-    const fieldErrors = parsed.error.flatten().fieldErrors;
+    const fieldErrors = z.flattenError(parsed.error).fieldErrors;
     return {
       fieldErrors: {
         email: fieldErrors.email?.[0],
