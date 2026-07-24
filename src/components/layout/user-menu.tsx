@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/ui";
 import { ROUTES } from "@/lib/routes";
 
+import packageJson from "../../../package.json";
+
 interface UserMenuProps {
   userEmail: string;
   logoutAction: () => void;
@@ -84,6 +86,9 @@ export function UserMenu({
               Log out
             </button>
           </form>
+          <div className="border-t border-border px-3.5 py-2 text-[11px] text-muted">
+            v{packageJson.version}
+          </div>
         </div>
       ) : null}
     </div>
